@@ -1,0 +1,115 @@
+Name     RSVLine;
+PartNo   U2;
+Date     2026-09-20;
+Revision r3;
+Designer SolderDemon m68k Really Simple Video;
+Company  rosco_m68k;
+Assembly SolderDemon m68k Really Simple Video r3;
+Location U2;
+Device   f1502ispplcc44;
+
+/*
+ * SolderDemon m68k Really Simple Video r3, U2 of 2: line counter, high address half, page register.
+ *
+ * U1 holds the byte counter and drives MA0..MA6; this chip holds the line counter and drives
+ * MA7..MA16. Splitting the counters along with the multiplexer halves is what lets the four
+ * 74HCT157 disappear: no counter bit crosses between the chips, only SEL_N, LEND and VBLANK.
+ *
+ *   line L 0..524: visible 0..479, front porch 480..489, VSYNC 490..491, back porch 492..524
+ * L steps on the edge that ends LEND -- the last clock of byte time 94, which is the end of the
+ * HSYNC pulse, so L is stable across the whole visible part of a line.
+ *
+ * MA7..MA15 is A16..A8 during a card cycle and L8..L0 otherwise; MA16 is the CPU's A17 during a
+ * card cycle and the displayed page otherwise, which is what gives the card two pages of
+ * 480 x 128 bytes in the one AS6C1008.
+ *
+ * Control register $B00001 b1 = page shown; U1 owns b0 (video on) and the status read.
+ *
+ * The pin numbers below are also read by tools/build_card.py and tools/sim_card.py, so this file
+ * is the single source of U2's pinout.
+ */
+
+PROPERTY ATMEL {JTAG = ON};
+PROPERTY ATMEL {TDI_PULLUP = ON};
+PROPERTY ATMEL {TMS_PULLUP = ON};
+PROPERTY ATMEL {PREASSIGN = KEEP};
+
+/* ---- dedicated input pins (these four cannot be outputs) ---- */
+PIN 43 = CLK25;                     /* GCLK1, 25.000 MHz oscillator */
+PIN 1  = RESET_N;                   /* GCLR */
+PIN 2  = LDS_N;
+PIN 44 = LEND;                      /* from U1: step the line counter on the next edge */
+
+/* ---- high half of the SRAM address (left side, facing the SRAM) ---- */
+PIN [4,5,6,8,9,11,12,14,16] = [MA7..15];
+PIN 17 = MA16;                      /* SRAM A16: the page bit */
+
+/* ---- CPU address bits that feed it (bottom side, facing the bus) ---- */
+PIN [18,19,20,21,24,25,26,27,28] = [A8..16];
+PIN 29 = A17;                       /* CPU page select during a card cycle */
+
+/* ---- bus control, the page register, and what goes back out (top side) ---- */
+PIN 31 = A20;
+PIN 33 = RW;
+PIN 34 = D1;                        /* the data bit of "page shown"; U1 drives it on a status read */
+PIN 36 = SEL_N;                     /* from U1 */
+PIN 39 = VBLANK;                    /* to U1, for blanking and for the status read */
+PIN 40 = VSYNC_N;
+
+/* ---- buried nodes ---- */
+PINNODE = [L0..9];
+PINNODE = PAGE;
+
+FIELD LINE = [L9..0];
+
+/* ---- line counter L = 0..524 --------------------------------------------------------------
+ * 524 = 1000001100 is the only reachable state with L9 & L3 & L2, so that is the whole wrap
+ * decode; states above it cannot occur in normal operation and walk into it.
+ */
+
+LLAST = L9 & L3 & L2;
+LCLR  = LEND & LLAST;
+
+L0.D = (L0 $ LEND) & !LCLR;
+L1.D = (L1 $ (LEND & L0)) & !LCLR;
+L2.D = (L2 $ (LEND & L1 & L0)) & !LCLR;
+L3.D = (L3 $ (LEND & L2 & L1 & L0)) & !LCLR;
+L4.D = (L4 $ (LEND & L3 & L2 & L1 & L0)) & !LCLR;
+L5.D = (L5 $ (LEND & L4 & L3 & L2 & L1 & L0)) & !LCLR;
+L6.D = (L6 $ (LEND & L5 & L4 & L3 & L2 & L1 & L0)) & !LCLR;
+L7.D = (L7 $ (LEND & L6 & L5 & L4 & L3 & L2 & L1 & L0)) & !LCLR;
+L8.D = (L8 $ (LEND & L7 & L6 & L5 & L4 & L3 & L2 & L1 & L0)) & !LCLR;
+L9.D = (L9 $ (LEND & L8 & L7 & L6 & L5 & L4 & L3 & L2 & L1 & L0)) & !LCLR;
+
+/* ---- vertical timing ----------------------------------------------------------------------
+ * VBLANK is L >= 480; L9 is not needed in the VSYNC term because line 1002 is unreachable.
+ */
+
+VBLANK    = L9 # (L8 & L7 & L6 & L5);
+VSYNC_N.D = !LINE:['d'490..'d'491];
+
+/* ---- high half of the address multiplexer -------------------------------------------------- */
+
+MA7  = (!SEL_N & A8)  # (SEL_N & L0);
+MA8  = (!SEL_N & A9)  # (SEL_N & L1);
+MA9  = (!SEL_N & A10) # (SEL_N & L2);
+MA10 = (!SEL_N & A11) # (SEL_N & L3);
+MA11 = (!SEL_N & A12) # (SEL_N & L4);
+MA12 = (!SEL_N & A13) # (SEL_N & L5);
+MA13 = (!SEL_N & A14) # (SEL_N & L6);
+MA14 = (!SEL_N & A15) # (SEL_N & L7);
+MA15 = (!SEL_N & A16) # (SEL_N & L8);
+MA16 = (!SEL_N & A17) # (SEL_N & PAGE);
+
+/* ---- page register -------------------------------------------------------------------------
+ * Same write as U1's "video on", same sampling: every CLK25 edge while the strobe is low. SEL_N
+ * comes from U1, so the two chips always agree about what a card cycle is.
+ */
+
+REGWR = !SEL_N & A20 & !RW & !LDS_N;
+PAGE.D  = (REGWR & D1.io) # (!REGWR & PAGE);
+PAGE.ar = !RESET_N;
+
+[L0..9].ck = CLK25;
+VSYNC_N.ck = CLK25;
+PAGE.ck = CLK25;

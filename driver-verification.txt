@@ -1,0 +1,33 @@
+PASS pixel (0,0) page 0 is at $A00001
+PASS the next byte across is two CPU addresses on
+PASS eight pixels share one byte
+PASS a row is 128 bytes = $100 of CPU address
+PASS page 1 starts $20000 further on
+PASS the last visible pixel is inside $A00000-$AFFFFF
+PASS video_init leaves the register at 0: video off, page 0
+PASS pixel (0,0) is bit 7 -- the 74AC166 shifts that one out first
+PASS pixel (7,0) is bit 0
+PASS pixel (8,0) starts the next byte
+PASS video_get reads bits back
+PASS clearing a pixel leaves its neighbours alone
+PASS video_clear(1) lights all 307200 pixels
+PASS video_clear leaves the 48 off-screen bytes of each row alone
+PASS video_clear(0) blanks them again
+PASS video_hline builds the partial end bytes correctly
+PASS and lights exactly 20 pixels
+PASS a run inside a single byte
+PASS drawing off the right and bottom edges is clipped, not wrapped
+PASS a border rectangle is hollow
+PASS video_line spans both ends
+PASS video_char puts the eight glyph rows on eight consecutive scanlines
+PASS inverse video flips the glyph
+PASS video_text wraps on a newline
+PASS drawing lands on the hidden page only
+PASS video_show(0, true) writes b0 only
+PASS video_flip shows the drawn page and hands the other one back
+PASS and flips back
+PASS the driver never touches an even address
+PASS video_selftest passes on a good card
+PASS and catches the page address line stuck low
+
+0 failed

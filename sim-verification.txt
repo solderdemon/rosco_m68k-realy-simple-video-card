@@ -1,0 +1,33 @@
+PASS U1 byte counter runs 0..99 and reaches 0 from all 128 power-up states (worst 99 steps)
+PASS U2 line counter runs 0..524 and reaches 0 from all 1024 power-up states (worst 524 steps)
+PASS system reset clears both halves of the control register
+PASS video off: no pixels leave the 74HC166
+PASS register write acknowledged
+PASS control register b0 = video on (U1), b1 = page (U2)
+PASS b1 selects page 1
+PASS status read: b0 = VBLANK, b1 = HBLANK, driven only by U1 (read 0xfc)
+PASS the register repeats up to $BFFFFF
+PASS register cycles never write the SRAM
+PASS 24 VRAM writes on both pages acknowledged
+PASS each byte landed in SRAM cell page << 16 | y << 7 | x >> 3 -- the two address halves agree
+PASS every byte reads back through the 74HCT245
+PASS no /DTACK outside $A00000-$BFFFFF ($900001)
+PASS no /DTACK outside $A00000-$BFFFFF ($C00001)
+PASS no /DTACK outside $A00000-$BFFFFF ($F40001)
+PASS no /DTACK outside $A00000-$BFFFFF ($000001)
+PASS writes outside the window leave the SRAM alone
+PASS no contention on D0-D7 / MD0-MD7 during CPU cycles (0 events)
+PASS counters reach byte 0 of line 0
+PASS line = 800 clocks of 25.000 MHz = 31.250 kHz (measured [800])
+PASS 525 lines per frame = 59.52 Hz (measured 525)
+PASS HSYNC falls at clock 664 of the line, 16 clocks of front porch after pixel 639 (measured [664])
+PASS HSYNC is 96 clocks = 3.84 us (measured [96])
+PASS VSYNC covers lines 490-491 (measured [490, 491, 492]; it is released one 25 MHz clock into 492)
+PASS MA0..MA16 is the video address on every clock of the frame -- U1 low half, U2 high half (0 mismatches)
+PASS all 307200 pixels of page 0 match the SRAM, bit 7 leftmost []
+PASS the pixel line is 0 outside the 640 x 480 picture []
+PASS page flipped inside vertical blanking
+PASS after the flip the first 4 lines come from page 1 [][]
+PASS no bus contention anywhere in the run (0 events)
+
+31 passed, 0 failed

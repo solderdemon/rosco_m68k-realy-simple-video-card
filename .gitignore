@@ -1,0 +1,24 @@
+# KiCad temporary files
+*.kicad_prl
+*.lck
+*.bak
+_autosave-*
+fp-info-cache
+.history/
+routing-swarm/
+
+# Autorouter intermediates
+routing.dsn
+routing.ses
+route.log
+tools/*.jar
+**/__pycache__/
+
+# Builds
+tests/*.exe
+software/*.o
+software/*.elf
+software/*.bin
+
+# Router logs
+logs/
