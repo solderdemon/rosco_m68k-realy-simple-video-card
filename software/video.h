@@ -1,5 +1,5 @@
 /*
- * SolderDemon m68k Really Simple Video r3 driver: 640 x 480, 1 bit per pixel, 2 pages.
+ * SolderDemon m68k Really Simple Video r1 driver: 640 x 480, 1 bit per pixel, 2 pages.
  *
  * Byte access only (/LDS), odd addresses:
  *   $A00001 + 2n   VRAM byte n = page << 16 | y << 7 | x >> 3   (128 bytes per row, 80 of them
@@ -13,8 +13,8 @@
  * on the current scanline. Draw on the hidden page and video_flip(), or draw inside
  * video_wait_vblank().
  */
-#ifndef ROSCO_VIDEO_H
-#define ROSCO_VIDEO_H
+#ifndef SOLDERDEMON_RSV_VIDEO_H
+#define SOLDERDEMON_RSV_VIDEO_H
 
 #include <stdbool.h>
 #include <stdint.h>

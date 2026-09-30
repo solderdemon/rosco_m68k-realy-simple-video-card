@@ -1,5 +1,5 @@
 ﻿Reference,Value,Footprint
-J1,ROSCO_M68K BUS,SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdge
+J1,SOLDERDEMON M68K BUS,SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdge
 U1,ATF1502AS-10JU44,Package_LCC:PLCC-44_THT-Socket
 U2,ATF1502AS-10JU44,Package_LCC:PLCC-44_THT-Socket
 J3,JTAG,Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical

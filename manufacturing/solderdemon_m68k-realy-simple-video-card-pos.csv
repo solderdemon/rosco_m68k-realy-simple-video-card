@@ -8,16 +8,16 @@ Ref,Val,Package,PosX,PosY,Rot,Side
 "C7","100nF","C_Disc_D5.0mm_W2.5mm_P2.50mm",51.000000,-27.250000,90.000000,top
 "C8","100nF","C_Disc_D5.0mm_W2.5mm_P2.50mm",51.000000,-69.250000,90.000000,top
 "C9","47uF 10V","CP_Radial_D6.3mm_P2.50mm",34.817600,-54.000000,0.000000,top
-"J1","ROSCO_M68K BUS","PinSocket_2x32_P2.54mm_Horizontal_CardEdge",94.000000,-87.370000,180.000000,top
-"J2","VGA","DSUB-15-HD_Socket_Horizontal_P2.29x1.90mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm",47.000000,-89.170000,0.000000,top
+"J1","SOLDERDEMON M68K BUS","PinSocket_2x32_P2.54mm_Horizontal_CardEdge",86.000000,-87.370000,180.000000,top
+"J2","VGA","DSUB-15-HD_Socket_Horizontal_P2.29x1.90mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm",34.000000,-89.170000,0.000000,top
 "J3","JTAG","PinHeader_2x05_P2.54mm_Vertical",60.920000,-42.275000,90.000000,top
-"Q1","2N3904","TO-92_Inline",18.730000,-79.360000,0.000000,top
-"R1","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",39.800000,-82.810000,90.000000,top
-"R2","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",43.200000,-82.810000,90.000000,top
-"R3","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",46.600000,-82.810000,90.000000,top
-"R4","47","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",33.000000,-82.810000,90.000000,top
-"R5","47","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",36.400000,-82.810000,90.000000,top
-"R6","220","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",27.000000,-82.810000,90.000000,top
+"Q1","2N3904","TO-92_Inline",6.230000,-79.360000,0.000000,top
+"R1","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",26.800000,-82.810000,90.000000,top
+"R2","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",30.200000,-82.810000,90.000000,top
+"R3","390","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",33.600000,-82.810000,90.000000,top
+"R4","47","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",20.000000,-82.810000,90.000000,top
+"R5","47","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",23.400000,-82.810000,90.000000,top
+"R6","220","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",14.000000,-82.810000,90.000000,top
 "U1","ATF1502AS-10JU44","PLCC-44_THT-Socket",67.270000,-13.650000,0.000000,top
 "U2","ATF1502AS-10JU44","PLCC-44_THT-Socket",67.270000,-55.650000,0.000000,top
 "U3","AS6C1008-55PCN","DIP-32_W15.24mm_Socket_LongPads",42.715000,-12.380000,-90.000000,top

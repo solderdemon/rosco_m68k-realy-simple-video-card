@@ -1,4 +1,4 @@
-"""SolderDemon m68k Really Simple Video r3: schematic + PCB placement generator. Run with KiCad 10 python.
+"""SolderDemon m68k Really Simple Video r1: schematic + PCB placement generator. Run with KiCad 10 python.
 
 VGA framebuffer card: 640 x 480, 1 bit per pixel, 2 pages, 5 ICs.
 
@@ -8,8 +8,8 @@ a one-line change there and the schematic follows.
   U1 bus interface, byte counter B = 0..99, HSYNC, HBLANK, the low address half MA0..MA6,
      the control register bit "video on" and the status read;
   U2 line counter L = 0..524, VSYNC, VBLANK, the high address half MA7..MA16 and the page bit.
-Splitting the counters along with the multiplexer halves is what lets the four 74HCT157 of r2
-disappear: no counter bit crosses between the chips, only SEL_N, LEND and VBLANK.
+Splitting the counters along with the multiplexer halves keeps the address multiplexer inside
+the CPLDs: no counter bit crosses between the chips, only SEL_N, LEND and VBLANK.
 Memory: one AS6C1008 (128K) holds 2 pages of 480 x 128 bytes: address = page:L[8:0]:B[6:0].
 A 74HC166 turns the byte into eight pixels; Q1 buffers the bit and three resistors take it to R, G and B.
 VRAM at odd addresses $A00001 + 2n, control and status at $B00001.
@@ -26,11 +26,11 @@ g.LIB = Path('C:/Program Files/KiCad/10.0/share/kicad')
 NAME = 'solderdemon_m68k-realy-simple-video-card'
 BASE = 0xA00000          # decoded in cpld/rsv_u1.pld; only used for notes and silkscreen here
 REG = 0xB00001
-REV = 'r3'
-W, H = 100.0, 96.0
+REV = 'r1'
+W, H = 92.0, 96.0
 
 d = g.Design(NAME, 'SolderDemon m68k Really Simple Video / VGA 640x480 mono, 2x ATF1502AS + SRAM', REV,
-             '2026-09-20', paper='A2', libname='SolderDemonReallySimpleVideo', ns='rosco-really-simple-video-r3/')
+             '2026-09-20', paper='A2', libname='SolderDemonReallySimpleVideo', ns='solderdemon-really-simple-video-r1/')
 DIP = lambda n, w=7.62: f'Package_DIP:DIP-{n}_W{w:.2f}mm_Socket_LongPads'
 FP_PLCC = 'Package_LCC:PLCC-44_THT-Socket'
 FP_C = 'Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm'
@@ -61,7 +61,7 @@ def named(key, m):
     return {num: m[name] for name, (num, typ) in pins.items()}
 
 
-# ---- J1: rosco_m68k r2 expansion bus (JP3 pinout) ---------------------------
+# ---- J1: SolderDemon m68k expansion bus (JP3 pinout, same as rosco_m68k r2) -
 bus = {1 + 2 * i: f'A{i + 1}' for i in range(23)}
 bus.update({2: '+5V', 4: 'CLK', 6: 'GND', 8: '~{VPA}', 10: 'E', 12: '~{VMA}', 14: '~{IRQ3}', 16: '~{IOSEL}', 18: '~{EXPSEL}',
             20: 'FC0', 22: 'FC1', 24: 'FC2', 26: '~{IRQ5}', 28: '~{IRQ2}', 30: '~{IRQ6}', 32: '~{LDS}', 34: '~{UDS}', 36: '~{RESET}',
@@ -70,7 +70,7 @@ bus.update({38 + 2 * i: f'D{15 - i}' for i in range(14)})
 used = ({'+5V', 'GND', '~{EXPSEL}', '~{LDS}', '~{RESET}', '~{DTACK}', 'RWB'}
         | {f'A{i}' for i in list(range(1, 18)) + [20, 21, 23]} | {f'D{i}' for i in range(8)})
 k = d.custom('BUS_2x32', [(i, bus[i], 'passive') for i in range(1, 65, 2)], [(i, bus[i], 'passive') for i in range(2, 65, 2)], FP_BUS, ref='J')
-d.add('J1', k, 'ROSCO_M68K BUS', {i: n if n in used else None for i, n in bus.items()}, (40, 110))
+d.add('J1', k, 'SOLDERDEMON M68K BUS', {i: n if n in used else None for i, n in bus.items()}, (40, 110))
 
 # ---- U1, U2: the two ATF1502AS. Pin numbers and directions come from the CUPL sources --------
 NET = {'LDS_N': '~{LDS}', 'EXPSEL_N': '~{EXPSEL}', 'RESET_N': '~{RESET}', 'RW': 'RWB', 'DTACK_N': '~{DTACK}',
@@ -272,18 +272,19 @@ place('J3', 66.0, 41.0, 90)
 ref_at('J3', 66.0, 35.0)
 
 # VGA socket on the bottom edge with its five series resistors straight above its pins.
-RES_X0, RES_Y = 33.0, 79.0
+# Kept to the left so the bottom right corner is free for the SolderDemon logo.
+RES_X0, RES_Y = 20.0, 79.0
 for i, ref in enumerate(['R4', 'R5', 'R1', 'R2', 'R3']):
     x = RES_X0 + 3.4 * i
     place(ref, x, RES_Y, 90)
     ref_at(ref, x, RES_Y - 6.3, 90)
-place('R6', 27.0, 79.0, 90)
-ref_at('R6', 27.0, 72.7, 90)
-place('Q1', 20.0, 79.0, 0)
-ref_at('Q1', 20.0, 74.0)
-J2_PIN1_X = 47.0
+place('R6', 14.0, 79.0, 90)
+ref_at('R6', 14.0, 72.7, 90)
+place('Q1', 7.5, 79.0, 0)
+ref_at('Q1', 7.5, 74.0)
+J2_PIN1_X = 34.0
 place('J2', J2_PIN1_X, H - 6.83, 0, pin1=True)
-ref_at('J2', 22.0, 94.5)
+ref_at('J2', 9.0, 94.5)
 
 
 def seg(a, z, layer=pcb.F_SilkS, line=.15):
@@ -332,15 +333,25 @@ arc((W, H - r), (W - k45, H - k45), (W - r, H))
 arc((r, H), (k45, H - k45), (0, H - r))
 arc((0, r), (k45, k45), (r, 0))
 
-text('SolderDemon m68k Really Simple Video', 62.0, 90.5, .85, bold=True)
-text(f'{REV}  VGA 640x480 mono', 62.0, 93.5, .8)
+# SolderDemon identity as on solderdemon_m68k-busboard and -gpio: the pixel logo with the name beside
+# it, in the bottom right corner between the VGA socket and the bus connector.
+LX0, LOGO_W, GAP, MID = 47.0, 13.2, 1.5, 85.5
+logo = pcb.FootprintLoad(str(LOCAL_FP), 'SolderDemon_Logo'); logo.SetFPID(pcb.LIB_ID('SolderDemonReallySimpleVideo', 'SolderDemon_Logo'))
+logo.SetReference('LOGO1'); logo.SetPosition(v(LX0 + LOGO_W / 2, MID)); b.Add(logo)
+tx = LX0 + LOGO_W + GAP
+text('SolderDemon', tx, MID - 1.6, 1.6, bold=True)
+text('Really Simple Video', tx, MID + 1.4, 1.0)
+text(f'{REV}   VGA 640x480 mono', tx, MID + 3.4, .8)
 text('BUS', BX + 1.27, 5, 1.0, left=False)
+# Back: chip notes between U5 and the resistors, register map and copyright behind the logo.
+# Mirrored text is centred: left-justified mirrored text runs off to the left.
+for i, line in enumerate(['R: b0 VBLANK b1 HBLANK   640x480, 2 pages',
+                          'U1 bus  U2 line/address   ATF1502AS, JTAG on J3']):
+    text(line, 24.0, 69.6 + i * 1.5, .8, pcb.B_SilkS, left=False)
 for i, line in enumerate([f'REALLY SIMPLE VIDEO {REV}', f'VRAM ${BASE + 1:06X} + 2n', 'n = page<<16|y<<7|x>>3',
-                          'bit 7 = leftmost pixel', f'${REG:06X} W: b0 on, b1 page']):
-    text(line, 74.0, 87.8 + i * 1.5, .8, pcb.B_SilkS, left=False)
-for i, line in enumerate(['R: b0 VBLANK b1 HBLANK', '640x480, 2 pages',
-                          'U1 bus  U2 line/address', 'ATF1502AS, JTAG on J3']):
-    text(line, 16.0, 87.8 + i * 1.5, .8, pcb.B_SilkS, left=False)
+                          'bit 7 = leftmost pixel', f'${REG:06X} W: b0 on, b1 page',
+                          NAME, f'{REV} (September 2026)', 'Copyright ©2026 SolderDemon']):
+    text(line, 64.0, 82.3 + i * 1.5, .8, pcb.B_SilkS, left=False, bold=i == 0)
 
 # No-connect pins get 'unconnected-(...)' nets in the schematic; copy nets and pin metadata onto the pads.
 netlist = ROOT / 'netlist.xml'

@@ -100,7 +100,7 @@ int main(void)
 
     video_clear(0);
     video_pixel(0, 0, 1);
-    check(vram[0][0] == 0x80, "pixel (0,0) is bit 7 -- the 74AC166 shifts that one out first");
+    check(vram[0][0] == 0x80, "pixel (0,0) is bit 7 -- the 74HC166 shifts that one out first");
     video_pixel(7, 0, 1);
     check(vram[0][0] == 0x81, "pixel (7,0) is bit 0");
     video_pixel(8, 0, 1);

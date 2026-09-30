@@ -5,8 +5,8 @@ Nothing in this project is edited by hand except `tools/`, `cpld/`, `software/` 
 `BOM.csv` and the manufacturing outputs are all generated, and the next run of the generator
 overwrites them. Open KiCad to *look* at the result, not to change it.
 
-The current board is already routed. Use `tools/regenerate_brand.py` for repeatable branding;
-running `tools/build_card.py` directly replaces the PCB with an unrouted placement board.
+`tools/build_card.py` always writes a PCB **without tracks**, so any change to the schematic,
+placement or silkscreen means re-routing with `tools/route_card.py`.
 
 `cpld/rsv_u1.pld` and `cpld/rsv_u2.pld` are the single source of truth for both the logic **and**
 the CPLD pinouts: `build_card.py` reads the pin numbers out of them to build the schematic
@@ -42,8 +42,8 @@ N=solderdemon_m68k-realy-simple-video-card
 # 2. The 8x8 console font -> software/font8x8.c (only after editing the pictures in make_font.py)
 python tools/make_font.py
 
-# 3. Schematic, symbols, footprints, BOM and design.json, preserving routed copper
-"$K/python.exe" tools/regenerate_brand.py
+# 3. Schematic, symbols, footprints, BOM, design.json and the unrouted, placed PCB
+"$K/python.exe" tools/build_card.py
 
 # 4. Logic simulation of the whole netlist, running the real CUPL equations (~15 min)
 python tools/sim_card.py
@@ -51,10 +51,8 @@ python tools/sim_card.py
 # 5. The driver against a model of the card
 make -C software host-test
 
-# 6. Only for a changed electrical design: run build_card.py in place to
-#    create an unrouted PCB, then use Freerouting and repair its pours.
-# "$K/python.exe" tools/build_card.py
-# "$K/python.exe" tools/route_card.py
+# 6. Freerouting swarm, GND pours, cleanup (ROUTE_MODE=best for a release)
+ROUTE_MODE=best "$K/python.exe" tools/route_card.py
 
 # 7. The gates
 "$K/kicad-cli.exe" sch erc -o erc.rpt $N.kicad_sch
@@ -62,11 +60,9 @@ make -C software host-test
     -o drc.rpt $N.kicad_pcb
 ```
 
-`regenerate_brand.py` runs the placement generator in a temporary directory, checks the
-generated pin-to-net map, and copies the schematic and libraries back. It then applies the
-silkscreen and project branding to the routed board without replacing its copper and exports
-manufacturing files and preview images. For a new hardware revision that actually needs
-rerouting, run `build_card.py` and then `route_card.py`.
+The SolderDemon logo footprint is generated from `logo.png` (the same image as on
+`solderdemon_m68k-busboard` and `solderdemon_m68k-gpio`) by `python tools/make_logo.py`; it only
+needs re-running when the image or its size (14 mm tall) changes.
 
 ## Manufacturing outputs
 
@@ -75,6 +71,13 @@ rerouting, run `build_card.py` and then `route_card.py`.
 "$K/kicad-cli.exe" pcb export drill   -o manufacturing/ $N.kicad_pcb
 "$K/kicad-cli.exe" pcb export pos --format csv --units mm -o manufacturing/$N-pos.csv $N.kicad_pcb
 "$K/kicad-cli.exe" sch export pdf -o manufacturing/$N-schematic.pdf $N.kicad_sch
+
+# Preview images. The 3D view is lit by the camera light only: any top or side light leaves a
+# specular glare on the solder mask. --pan recentres the board, whose connectors stick out
+# to the right and bottom.
+"$K/kicad-cli.exe" pcb render --side top --width 1600 --height 1000 -o $N-top.png $N.kicad_pcb
+"$K/kicad-cli.exe" pcb render --side bottom --width 1600 --height 1000 -o $N-bottom.png $N.kicad_pcb
+"$K/kicad-cli.exe" pcb render --side top --perspective --rotate -40,0,-20 --zoom 0.8 --pan " 0.6,1.4,0"     --background transparent --light-camera 1 --light-top 0 --light-side 0 --light-bottom 0     --width 1600 --height 1000 -o $N-3d.png $N.kicad_pcb
 ```
 
 ## Where things are decided
@@ -99,20 +102,9 @@ operators `! & # $`, field equality and ranges, and the `.d .t .ck .ar .oe .io` 
 turns the equations into a little synchronous model. It is not a compiler: it lets the netlist
 simulation run the real source, so what is tested is what the fitter will see.
 
-It came from the abandoned ATF1508 revision of `rosco_m68k-simple-video`; the `$` (XOR) operator
-was added here, because CPLD-style counters need it to stay inside five product terms per
-macrocell.
+The `$` (XOR) operator is supported because CPLD-style counters need it to stay inside five
+product terms per macrocell.
 
 `sim_card.py` instantiates it twice — once per `.pld` — and wires the two models together through
 the netlist exactly as the board does, so `SEL_N`, `LEND` and `VBLANK` are simulated as real nets
 rather than assumed.
-
-## Earlier revisions
-
-Both are complete and archived under `rosco_m68k-realy-simple-video-card-backups/`; unzip either
-over a clean directory.
-
-- `r2-atf1502-single-2026-09-20.zip` — one ATF1502AS plus four 74HCT157, 8 ICs, one video page.
-- `r1-gal-2026-09-20.zip` — four ATF22V10C plus four 74HCT157, 11 ICs. This is the only revision
-  whose logic was verified from real JEDEC fuse maps, and the only one that programs on a TL866
-  with no JTAG hardware at all.

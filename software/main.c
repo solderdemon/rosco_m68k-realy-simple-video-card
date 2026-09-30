@@ -2,7 +2,7 @@
  * SolderDemon m68k Really Simple Video demo: self test, a text page, then a bouncing box drawn on the
  * hidden page and flipped at VBLANK, so nothing tears and no CPU access ever shows as snow.
  *
- * Build with the rosco_m68k toolchain (see docs/BUILD.md) and load the .bin over the serial
+ * Build with the SolderDemon m68k toolchain (see docs/BUILD.md) and load the .bin over the serial
  * bootloader. Progress goes to the serial console as well as to the screen.
  */
 #include <stdio.h>
@@ -14,7 +14,7 @@ static void draw_frame(int bx, int by, int w, int h)
     video_clear(0);
     video_rect(0, 0, VIDEO_WIDTH, VIDEO_HEIGHT, 1);
     video_rect(2, 2, VIDEO_WIDTH - 4, VIDEO_HEIGHT - 4, 1);
-    video_text(2, 1, "SolderDemon m68k Really Simple Video r3  --  640 x 480 mono, 2 pages");
+    video_text(2, 1, "SolderDemon m68k Really Simple Video r1  --  640 x 480 mono, 2 pages");
     video_fill((unsigned)bx, (unsigned)by, (unsigned)w, (unsigned)h, 1);
     video_rect((unsigned)bx - 2, (unsigned)by - 2, (unsigned)w + 4, (unsigned)h + 4, 1);
 }
@@ -40,7 +40,7 @@ int main(void)
     video_draw_page(0);
     video_clear(0);
     video_rect(0, 0, VIDEO_WIDTH, VIDEO_HEIGHT, 1);
-    video_text(2, 2, "SolderDemon m68k Really Simple Video r3");
+    video_text(2, 2, "SolderDemon m68k Really Simple Video r1");
     video_text(2, 4, "640 x 480 @ 60 Hz, 1 bit per pixel, 80 x 60 characters");
     video_text(2, 5, "VRAM  $A00001 + 2n,  n = page << 16 | y << 7 | x >> 3");
     video_text(2, 6, "control / status at $B00001, two ATF1502AS-10JU44");

@@ -2,7 +2,7 @@
  {
   "ref": "J1",
   "key": "SolderDemonReallySimpleVideo:BUS_2x32",
-  "value": "ROSCO_M68K BUS",
+  "value": "SOLDERDEMON M68K BUS",
   "nets": {
    "1": "A1",
    "3": "A2",
@@ -79,7 +79,7 @@
   ],
   "rot": 0,
   "fp": "SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdge",
-  "uuid": "7c98e462-c89a-5103-b1c4-c022baa353a7"
+  "uuid": "8f6a411e-2354-5be4-ba71-b84a1f38a3c9"
  },
  {
   "ref": "U1",
@@ -141,7 +141,7 @@
   ],
   "rot": 0,
   "fp": "Package_LCC:PLCC-44_THT-Socket",
-  "uuid": "814f71cd-fcae-592c-9dc1-cb445293872f"
+  "uuid": "f55312db-c712-5e55-9cc8-065a346cd4df"
  },
  {
   "ref": "U2",
@@ -203,7 +203,7 @@
   ],
   "rot": 0,
   "fp": "Package_LCC:PLCC-44_THT-Socket",
-  "uuid": "954b4dd4-04f6-55b9-979a-37f1b5559714"
+  "uuid": "d9d80b17-442e-571f-b154-9462463c29bf"
  },
  {
   "ref": "J3",
@@ -231,7 +231,7 @@
   ],
   "rot": 0,
   "fp": "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical",
-  "uuid": "0fcc72fa-5ef5-5c8a-ba7a-f2ae2ea59491"
+  "uuid": "58322549-97b0-5681-ad11-27ef0a6b098a"
  },
  {
   "ref": "U3",
@@ -281,7 +281,7 @@
   ],
   "rot": 0,
   "fp": "Package_DIP:DIP-32_W15.24mm_Socket_LongPads",
-  "uuid": "2239b034-aedf-56be-b43b-bac72821c827"
+  "uuid": "80148274-81a5-5437-8c3a-087b7e95b34f"
  },
  {
   "ref": "U4",
@@ -319,7 +319,7 @@
   ],
   "rot": 0,
   "fp": "Package_DIP:DIP-20_W7.62mm_Socket_LongPads",
-  "uuid": "39b1781b-0739-52ee-9bec-8dff7cb9c470"
+  "uuid": "9a274685-aab2-5375-9199-b138053bcd55"
  },
  {
   "ref": "U5",
@@ -353,7 +353,7 @@
   ],
   "rot": 0,
   "fp": "Package_DIP:DIP-16_W7.62mm_Socket_LongPads",
-  "uuid": "97218a81-e2c5-51dd-af75-08246bc1b021"
+  "uuid": "a49ec689-5df3-5b2b-80f9-246991b3bd57"
  },
  {
   "ref": "X1",
@@ -375,7 +375,7 @@
   ],
   "rot": 0,
   "fp": "Oscillator:Oscillator_DIP-8",
-  "uuid": "f3a98210-3394-5e9b-aa5c-7aa8c97a9fd7"
+  "uuid": "e30ce3ae-2e51-5a12-b66c-be12925d8f7e"
  },
  {
   "ref": "R6",
@@ -395,7 +395,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "b98024f0-aed1-5874-bdbf-50d55b09dc34"
+  "uuid": "0f2ad17e-1bf8-5caf-8ba4-1005b67af406"
  },
  {
   "ref": "Q1",
@@ -416,7 +416,7 @@
   ],
   "rot": 0,
   "fp": "Package_TO_SOT_THT:TO-92_Inline",
-  "uuid": "2373ef4f-d8a6-54a7-af50-28927a2af222"
+  "uuid": "33685dbb-3ca2-500c-912b-e45697bfda25"
  },
  {
   "ref": "R1",
@@ -436,7 +436,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "e9a83284-9f2a-53ce-a361-e96967f3ffa1"
+  "uuid": "90700be9-8533-518d-93b6-f95115e160d0"
  },
  {
   "ref": "R2",
@@ -456,7 +456,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "1764097b-b4fb-53fc-9a1e-bdea690ffb75"
+  "uuid": "5a5089b9-e9a1-55de-b2bd-f691fb761337"
  },
  {
   "ref": "R3",
@@ -476,7 +476,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "ab4bbc3a-2ad9-5741-8dc7-7876fd313ba5"
+  "uuid": "c6782f37-4bc6-535d-9040-efed7fca6684"
  },
  {
   "ref": "R4",
@@ -496,7 +496,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "ccb0e30f-9849-5743-8398-8038b3641fc6"
+  "uuid": "6d97db24-9f4b-5c0d-aace-ff36fcef223a"
  },
  {
   "ref": "R5",
@@ -516,7 +516,7 @@
   ],
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-  "uuid": "cf94838d-9296-57b1-8518-5d8c7613f174"
+  "uuid": "f8054844-915a-58f4-a6c3-3deebcfca942"
  },
  {
   "ref": "J2",
@@ -550,7 +550,7 @@
   ],
   "rot": 0,
   "fp": "SolderDemonReallySimpleVideo:DSUB-15-HD_Socket_Horizontal_P2.29x1.90mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm",
-  "uuid": "8c546ed2-8674-599f-a75e-a0abeb44d67c"
+  "uuid": "bbeef143-9166-5522-9749-262cf16f3bfe"
  },
  {
   "ref": "C1",
@@ -570,7 +570,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "252496a2-374d-55fd-b0c1-04a207d98c60"
+  "uuid": "bab8bce1-36e1-5ad7-a0a6-3497dea89666"
  },
  {
   "ref": "C2",
@@ -590,7 +590,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "2e79ab45-fd42-5cc3-8063-8485aa055853"
+  "uuid": "cdfe3eb3-24d1-57d1-8ef1-a59653c950bf"
  },
  {
   "ref": "C3",
@@ -610,7 +610,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "3b328533-758c-5ff5-af7a-039d5b84a4c6"
+  "uuid": "37ee330c-11ad-5928-976e-ceec03dc3927"
  },
  {
   "ref": "C4",
@@ -630,7 +630,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "c42b17f6-c4bc-527d-bc57-239d2fe44d49"
+  "uuid": "243f4c54-19ff-589d-b584-0e95fb0b3c81"
  },
  {
   "ref": "C5",
@@ -650,7 +650,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "4e88613e-c99b-549f-b658-17f337c12d0a"
+  "uuid": "2d4b9d88-5110-587a-8937-11a0fc179618"
  },
  {
   "ref": "C6",
@@ -670,7 +670,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "8e77c93a-e9fc-5c4b-a35e-5760ace57459"
+  "uuid": "25fc73fb-4af6-5d24-9bb7-b161b0729e1e"
  },
  {
   "ref": "C7",
@@ -690,7 +690,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "8395eb18-74ea-52c9-8d8b-186b34049363"
+  "uuid": "bec6ba00-e935-509a-96e7-fc789b0664aa"
  },
  {
   "ref": "C8",
@@ -710,7 +710,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
-  "uuid": "33304a2e-4149-508a-8ef0-7daa6807d573"
+  "uuid": "d2fb6c8d-bf35-5b08-ab02-1971ea002f8c"
  },
  {
   "ref": "C9",
@@ -730,7 +730,7 @@
   ],
   "rot": 0,
   "fp": "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm",
-  "uuid": "3fa7408d-9117-5103-818d-6bf3efc743ab"
+  "uuid": "0e3a7e5f-f200-59d2-8ced-fe1e4bbbac41"
  },
  {
   "ref": "#FLG01",
@@ -749,7 +749,7 @@
   ],
   "rot": 0,
   "fp": "",
-  "uuid": "987f88b8-6e5b-5604-9522-2d632e3d37a6"
+  "uuid": "3eb74ff4-ae91-56c8-8412-ca0bd87f1ab8"
  },
  {
   "ref": "#FLG02",
@@ -768,6 +768,6 @@
   ],
   "rot": 0,
   "fp": "",
-  "uuid": "57377f7f-cd5f-5d12-b3d1-37c0e4d19739"
+  "uuid": "0a894572-6d2c-519a-ac57-8e59f50c2392"
  }
 ]

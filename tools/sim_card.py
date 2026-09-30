@@ -222,7 +222,7 @@ def tick():
 
 
 def expsel(a):
-    """rosco r2 PLD: /EXPSEL = /AS * (A23*/A21 + /A23*A22 + /A23*A20 + /A22*A21)."""
+    """SolderDemon m68k (rosco_m68k r2) mainboard PLD: /EXPSEL = /AS * (A23*/A21 + /A23*A22 + /A23*A20 + /A22*A21)."""
     b = lambda n: a >> n & 1
     return 0 if (b(23) and not b(21)) or (not b(23) and b(22)) or (not b(23) and b(20)) or (not b(22) and b(21)) else 1
 

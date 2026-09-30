@@ -15,7 +15,7 @@ EDGE_LOCAL_X = -5.5   # J1 is placed rotated 180 deg with pin 1 6 mm from the ri
 io = pcb.PCB_IO_MGR.FindPlugin(pcb.PCB_IO_MGR.KICAD_SEXP)
 fp = io.FootprintLoad('C:/Program Files/KiCad/10.0/share/kicad/footprints/Connector_PinSocket_2.54mm.pretty', 'PinSocket_2x32_P2.54mm_Horizontal')
 fp.SetFPID(pcb.LIB_ID('SolderDemonReallySimpleVideo', NAME))
-fp.SetLibDescription('2x32 2.54 mm right-angle socket for rosco_m68k cards; silkscreen stops at the card edge')
+fp.SetLibDescription('2x32 2.54 mm right-angle socket for SolderDemon m68k (rosco_m68k compatible) cards; silkscreen stops at the card edge')
 doomed = [item for item in fp.GraphicalItems()
           if item.GetLayer() == pcb.F_SilkS and pcb.ToMM(item.GetBoundingBox().GetLeft()) < EDGE_LOCAL_X]
 LIB.mkdir(exist_ok=True)

@@ -1,18 +1,18 @@
 Name     RSVBus;
 PartNo   U1;
 Date     2026-09-20;
-Revision r3;
+Revision r1;
 Designer SolderDemon m68k Really Simple Video;
-Company  rosco_m68k;
-Assembly SolderDemon m68k Really Simple Video r3;
+Company  SolderDemon;
+Assembly SolderDemon m68k Really Simple Video r1;
 Location U1;
 Device   f1502ispplcc44;
 
 /*
- * SolderDemon m68k Really Simple Video r3, U1 of 2: bus interface, byte counter, low address half.
+ * SolderDemon m68k Really Simple Video r1, U1 of 2: bus interface, byte counter, low address half.
  *
- * r3 splits the card across two ATF1502AS-10JU44 so that the four 74HCT157 address multiplexers
- * can move inside. The trick is to split the counters along with the multiplexer halves: U1 keeps
+ * The card is split across two ATF1502AS-10JU44 with the address multiplexer inside them.
+ * The trick is to split the counters along with the multiplexer halves: U1 keeps
  * the byte counter and drives MA0..MA6, U2 keeps the line counter and drives MA7..MA16, so no
  * counter bit ever has to cross between the two chips. Only SEL, LEND and VBLANK do.
  *
@@ -26,7 +26,7 @@ Device   f1502ispplcc44;
  * MA0..MA6 is the low half of the SRAM address: the CPU's A7..A1 while the card is selected,
  * the byte counter otherwise. U2 does the same for MA7..MA16.
  *
- * Bus (rosco_m68k r2 expansion, /EXPSEL already contains /AS), window $A00000-$BFFFFF:
+ * Bus (SolderDemon m68k expansion, same as rosco_m68k r2; /EXPSEL already contains /AS), window $A00000-$BFFFFF:
  *   $A00001 + 2n  VRAM byte n = page << 16 | y << 7 | x >> 3, byte access through /LDS only
  *   $B00001       write: b0 video on (here), b1 page shown (in U2); cleared by /RESET
  *                 read:  b0 VBLANK, b1 HBLANK; b2-b7 are not driven
@@ -127,7 +127,7 @@ BLANK = HBLANK # VBLANK # !VIDEOON;
 LOAD_N.D = !(PH2 & PH1 & !PH0 & !BLANK);
 
 /* ---- low half of the address multiplexer --------------------------------------------------
- * What used to be U5 and half of U6 in r1: MA0..MA6 = A7..A1 during a card cycle, the byte
+ * MA0..MA6 = A7..A1 during a card cycle, the byte
  * counter otherwise. Two product terms each.
  */
 

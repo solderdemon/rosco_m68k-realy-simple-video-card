@@ -1,4 +1,4 @@
-"""Shared schematic and netlist generator for rosco_m68k video cards.
+"""Shared schematic and netlist generator for SolderDemon m68k video cards.
 
 Adapted from gpiolib / build_card. Every part is placed on the schematic sheet;
 each pin gets a short wire stub and a net label, defining the netlist cleanly.
@@ -62,7 +62,7 @@ def library_symbol(lib, name):
     return s
 
 class Design:
-    def __init__(self, name, title, rev, date, paper='A2', libname='RoscoSimpleVideo', ns='rosco-simple-video/'):
+    def __init__(self, name, title, rev, date, paper='A2', libname='SolderDemonReallySimpleVideo', ns='solderdemon-video/'):
         self.name, self.title, self.rev, self.date, self.paper, self.libname, self.ns = name, title, rev, date, paper, libname, ns
         self.symbols = {}; self.parts = []; self.notes = []; self.footprints = {}
     
@@ -159,7 +159,7 @@ class Design:
         for text, x, y, size in self.notes:
             els.append(f'(text {q(text)} (at {x} {y} 0) (effects (font (size {size} {size})) (justify left)) (uuid {self.uid("note" + text)}))')
 
-        sch = (f'(kicad_sch (version 20250114) (generator "rosco_video") (uuid {self.uid("root")}) (paper {q(self.paper)}) '
+        sch = (f'(kicad_sch (version 20250114) (generator "solderdemon_video") (uuid {self.uid("root")}) (paper {q(self.paper)}) '
                f'(title_block (title {q(self.title)}) (date {q(self.date)}) (rev {q(self.rev)})) (lib_symbols ' + ''.join(dump(s) for s in self.symbols.values()) + ')'
                + ''.join(els) + '(sheet_instances (path "/" (page "1"))))')
         
@@ -169,7 +169,7 @@ class Design:
         for k, s in self.symbols.items():
             if k.startswith(self.libname + ':'):
                 t = copy.deepcopy(s); t[1] = k.split(':', 1)[1]; local.append(t)
-        (out / f'{self.libname}.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "rosco_video")' + ''.join(dump(s) for s in local) + ')', encoding='utf-8')
+        (out / f'{self.libname}.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "solderdemon_video")' + ''.join(dump(s) for s in local) + ')', encoding='utf-8')
         (out / 'sym-lib-table').write_text(f'(sym_lib_table (lib (name {q(self.libname)}) (type "KiCad") (uri "${{KIPRJMOD}}/{self.libname}.kicad_sym") (options "") (descr "Card symbols")))')
         (out / 'fp-lib-table').write_text('(fp_lib_table ' + ''.join(f'(lib (name {q(n)}) (type "KiCad") (uri {q(u)}) (options "") (descr ""))' for n, u in fp_libs) + ')')
         (out / 'design.json').write_text(json.dumps(self.parts, indent=1) + '\n')

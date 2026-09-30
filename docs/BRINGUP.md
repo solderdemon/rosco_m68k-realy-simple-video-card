@@ -120,5 +120,5 @@ overwriting the other rather than as a picture that is subtly wrong.
 - real propagation delays, inside the CPLDs and on the board;
 - the BUFD timing and the LEND hand-off above;
 - the 0.67 V video level on a real monitor, and monitor tolerance of the timing;
-- a build with the rosco_m68k toolchain;
+- a build with the SolderDemon m68k toolchain;
 - the board itself — no PCB has been ordered.

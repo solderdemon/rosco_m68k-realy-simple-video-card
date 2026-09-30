@@ -1,19 +1,19 @@
 Name     RSVLine;
 PartNo   U2;
 Date     2026-09-20;
-Revision r3;
+Revision r1;
 Designer SolderDemon m68k Really Simple Video;
-Company  rosco_m68k;
-Assembly SolderDemon m68k Really Simple Video r3;
+Company  SolderDemon;
+Assembly SolderDemon m68k Really Simple Video r1;
 Location U2;
 Device   f1502ispplcc44;
 
 /*
- * SolderDemon m68k Really Simple Video r3, U2 of 2: line counter, high address half, page register.
+ * SolderDemon m68k Really Simple Video r1, U2 of 2: line counter, high address half, page register.
  *
  * U1 holds the byte counter and drives MA0..MA6; this chip holds the line counter and drives
- * MA7..MA16. Splitting the counters along with the multiplexer halves is what lets the four
- * 74HCT157 disappear: no counter bit crosses between the chips, only SEL_N, LEND and VBLANK.
+ * MA7..MA16. Splitting the counters along with the multiplexer halves keeps the address
+ * multiplexer inside: no counter bit crosses between the chips, only SEL_N, LEND and VBLANK.
  *
  *   line L 0..524: visible 0..479, front porch 480..489, VSYNC 490..491, back porch 492..524
  * L steps on the edge that ends LEND -- the last clock of byte time 94, which is the end of the
