@@ -38,20 +38,22 @@ def check(name):
 
     # The fitter may put a buried register straight into the macrocell of the pin that only
     # copies it (U1: `D1 = HBLANK` becomes register D1): give it back the model's name.
-    for r in sorted({n for n, e in eqs if e == 'D'} - set(dev.regs)):
+    for r in sorted({n for n, e in eqs if e in ('D', 'T')} - set(dev.regs)):
         m = dev.eq.get((r, ''), '').strip()
         assert m in dev.regs, f'{name}: fitted register {r} is not in the model'
         eqs = {k: (neg, re.sub(rf'\b{r}\.Q\b', f'{m}.Q', rhs)) for k, (neg, rhs) in eqs.items()}
-        for e in ('D', 'C', 'AR'):
+        for e in ('D', 'T', 'C', 'AR'):
             if (r, e) in eqs:
                 eqs[(m, e)] = eqs.pop((r, e))
         eqs[(r, '')] = (False, f'{m}.Q')
 
-    regs = sorted({n for n, e in eqs if e == 'D'})
+    regs = sorted({n for n, e in eqs if e in ('D', 'T')})
     combs = [n for n, e in eqs if e == '']
     assert set(regs) == set(dev.regs), (name, set(regs) ^ set(dev.regs))
+    clock_of = getattr(dev, 'clock_of', None) or {r: dev.clock for r in regs}
     for r in regs:
-        assert eqs.get((r, 'C'), (0, ''))[1] == dev.clock, f'{name}: {r} is not on {dev.clock}'
+        got = re.sub(r'\s+', '', eqs.get((r, 'C'), (0, ''))[1])
+        assert got == re.sub(r'\s+', '', clock_of[r]), f'{name}: {r} clocked by {got}, not {clock_of[r]}'
 
     def operand(m):
         n = m.group(1)
@@ -97,7 +99,8 @@ def check(name):
         model = dev.clock_edge(p, dict(q))
         c = comb(p, q)
         for r in regs:
-            if (0 if ar[r] else F[(r, 'D')](p, q, c)) != model[r]:
+            nxt = F[(r, 'D')](p, q, c) if (r, 'D') in F else q[r] ^ F[(r, 'T')](p, q, c)
+            if (0 if ar[r] else nxt) != model[r]:
                 bad[r + '.D'] = bad.get(r + '.D', 0) + 1
     print(f'{name}: {len(regs)} registers, {len(outs)} outputs, {VECTORS} random vectors --',
           f'MISMATCH {bad}' if bad else 'fitted equations match the model')
@@ -105,5 +108,5 @@ def check(name):
 
 
 if __name__ == '__main__':
-    ok = [check(n) for n in sys.argv[1:] or ('rsv_u1', 'rsv_u2')]
+    ok = [check(n) for n in sys.argv[1:] or sorted(f.stem for f in (ROOT / 'cpld').glob('*.pld'))]
     sys.exit(0 if all(ok) else 1)
