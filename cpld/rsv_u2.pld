@@ -1,5 +1,5 @@
 Name     RSVLine;
-PartNo   U2;
+PartNo   ATF1502AS;
 Date     2026-09-20;
 Revision r1;
 Designer SolderDemon m68k Really Simple Video;
@@ -83,10 +83,12 @@ L9.D = (L9 $ (LEND & L8 & L7 & L6 & L5 & L4 & L3 & L2 & L1 & L0)) & !LCLR;
 
 /* ---- vertical timing ----------------------------------------------------------------------
  * VBLANK is L >= 480; L9 is not needed in the VSYNC term because line 1002 is unreachable.
+ * Keep the parentheses in !(LINE:...): CUPL reads !LINE:[..] as "the complemented field is in
+ * range", which is lines 532..533 -- VSYNC would never go high.
  */
 
 VBLANK    = L9 # (L8 & L7 & L6 & L5);
-VSYNC_N.D = !LINE:['d'490..'d'491];
+VSYNC_N.D = !(LINE:['d'490..'d'491]);
 
 /* ---- high half of the address multiplexer -------------------------------------------------- */
 

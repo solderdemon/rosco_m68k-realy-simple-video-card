@@ -18,15 +18,14 @@ pin there and everything follows.
 | What | Where |
 |---|---|
 | KiCad 10 | `C:/Program Files/KiCad/10.0/bin/python.exe`, `kicad-cli.exe` |
-| WinCUPL + the ATF150x fitter | Microchip, free — for the CPLD firmware |
+| WinCUPL + the ATF150x fitter | Docker image `dinoboards/cpld-toolchain` (see `../tools/cpld-toolchain`), Docker Desktop running |
 | A JTAG programmer | USB Blaster clone with ATMISP or OpenOCD |
 | Java | Temurin **25 or newer** — Freerouting 2.4.1 is built for class file 69 and will not start on 21 |
 | Freerouting | `../tools/freerouting-2.4.1.jar`, found automatically |
 | clang (or any C compiler) | only for the host driver test |
 
-Anything that imports `pcbnew` has to run under KiCad's own Python, not the system one. **There is
-no CPLD toolchain on the machine this card was designed on**, so no `.jed` is in the repo and the
-fits have never been checked — see [BRINGUP §1](BRINGUP.md#1-compile-and-program-the-two-cplds).
+Anything that imports `pcbnew` has to run under KiCad's own Python, not the system one. The CPLD
+firmware is built in Docker; `cpld/bin/` keeps the `.jed` and `.fit` of the last build.
 
 ## The pipeline
 
@@ -36,8 +35,10 @@ Each step is a gate: move on only when the current one is clean.
 K="/c/Program Files/KiCad/10.0/bin"
 N=solderdemon_m68k-realy-simple-video-card
 
-# 1. CPLD firmware -- WinCUPL, both .pld files, by hand.
+# 1. CPLD firmware: WinCUPL + fitter in docker -> cpld/bin/*.jed, pin check, and
+#    tools/check_fit.py (fitted equations == the cupl.py model the simulation runs).
 #    Do this first: if either does not fit, nothing else matters.
+./cpld/build.sh
 
 # 2. The 8x8 console font -> software/font8x8.c (only after editing the pictures in make_font.py)
 python tools/make_font.py

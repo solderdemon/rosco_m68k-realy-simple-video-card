@@ -1,5 +1,5 @@
 Name     RSVBus;
-PartNo   U1;
+PartNo   ATF1502AS;
 Date     2026-09-20;
 Revision r1;
 Designer SolderDemon m68k Really Simple Video;
@@ -113,10 +113,12 @@ LEND.D = PH2 & PH1 & !PH0 & BYTE:'d'94;
 /* ---- sync and blanking --------------------------------------------------------------------
  * HBLANK covers byte times 80..99, which stops the load one byte early so that exactly bytes
  * 0..79 are fetched; HSYNC_N is low for byte times 83..94 = clocks 664..759.
+ * The parentheses in !(BYTE:...) matter: CUPL reads !BYTE:[..] as "the complemented field is in
+ * range" (byte times 34..45), not as "BYTE is not in range".
  */
 
 HBLANK.D  = (BEND & BYTE:['d'79..'d'98]) # (!BEND & HBLANK);
-HSYNC_N.D = (BEND & !BYTE:['d'82..'d'93]) # (!BEND & HSYNC_N);
+HSYNC_N.D = (BEND & !(BYTE:['d'82..'d'93])) # (!BEND & HSYNC_N);
 
 BLANK = HBLANK # VBLANK # !VIDEOON;
 

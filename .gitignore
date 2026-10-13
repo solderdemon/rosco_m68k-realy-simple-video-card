@@ -22,3 +22,8 @@ software/*.bin
 
 # Router logs
 logs/
+
+# CPLD build (cpld/build.sh): keep only the programming files and the fitter reports
+cpld/bin/*
+!cpld/bin/*.jed
+!cpld/bin/*.fit

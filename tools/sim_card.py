@@ -174,6 +174,14 @@ sram = P['U3']
 u1, u2 = P['U1'], P['U2']
 CPU = 'J1'
 
+# X1 pin 5 reaches its loads through the series resistors R7 (CPLDs) and R8 (U5): a zero-delay
+# model treats each resistor as a wire, so X1 drives every net on the far side of one too.
+x1 = next(p for p in parts if p['ref'] == 'X1')['nets']['5']
+CLOCKS = [x1] + [n for p in parts if p['ref'].startswith('R')
+                 for a, n in ((p['nets']['1'], p['nets']['2']), (p['nets']['2'], p['nets']['1'])) if a == x1]
+assert sorted(CLOCKS[1:]) == ['CLK25', 'CLK_SR'], CLOCKS
+assert u1.sig['CLK25'] == u2.sig['CLK25'] == 'CLK25' and P['U5'].n['Clk'] == 'CLK_SR'
+
 
 def settle(snap, start=None):
     queue = deque(P.values() if start is None else start)
@@ -216,9 +224,12 @@ def tick():
     global TICKS
     TICKS += 1
     snap = dict(val)
-    drivers['CLK25']['X1'] = 1 - val['CLK25']
-    val['CLK25'] = resolve('CLK25')
-    settle(snap, readers['CLK25'])
+    start = {}
+    for net in CLOCKS:
+        drivers[net]['X1'] = 1 - val[net]
+        val[net] = resolve(net)
+        start.update(dict.fromkeys(readers[net]))
+    settle(snap, start)
 
 
 def expsel(a):
@@ -309,8 +320,9 @@ ok, worst = counter('U2', 'L', 10, 525, at_line_end)
 check(ok and worst < 525, f'U2 line counter runs 0..524 and reaches 0 from all 1024 power-up states (worst {worst} steps)')
 
 # ---- power-on ---------------------------------------------------------------------------------
-drivers['CLK25']['X1'] = 0
-val['CLK25'] = 0
+for net in CLOCKS:
+    drivers[net]['X1'] = 0
+    val[net] = 0
 cpu(EXPSEL=1, LDS=1, RWB=1, RESET=0, **{f'A{i}': 0 for i in range(1, 24)})
 settle(dict(val))
 tick(); tick()

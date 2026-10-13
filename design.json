@@ -332,7 +332,7 @@
    "4": "MD2",
    "5": "MD3",
    "6": "GND",
-   "7": "CLK25",
+   "7": "CLK_SR",
    "8": "GND",
    "9": "+5V",
    "10": "MD4",
@@ -362,7 +362,7 @@
   "nets": {
    "1": "+5V",
    "4": "GND",
-   "5": "CLK25",
+   "5": "CLK_OSC",
    "8": "+5V"
   },
   "xy": [
@@ -517,6 +517,46 @@
   "rot": 0,
   "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
   "uuid": "f8054844-915a-58f4-a6c3-3deebcfca942"
+ },
+ {
+  "ref": "R7",
+  "key": "Device:R",
+  "value": "33",
+  "nets": {
+   "1": "CLK_OSC",
+   "2": "CLK25"
+  },
+  "xy": [
+   379.73,
+   190.5
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "1779162b-1ae4-540b-b2ac-f9cb6a858c72"
+ },
+ {
+  "ref": "R8",
+  "key": "Device:R",
+  "value": "33",
+  "nets": {
+   "1": "CLK_OSC",
+   "2": "CLK_SR"
+  },
+  "xy": [
+   379.73,
+   214.63
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "6eae4f24-2449-50c4-af15-d7691a4f08e8"
  },
  {
   "ref": "J2",

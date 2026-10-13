@@ -20,7 +20,7 @@ How the card works and why it is built this way. The schematic and PCB are gener
                      └──────────────────────► U2 ATF1502AS ── MA7..MA16 ───────┘   │
         ◄──D7..0──► U4 245 ◄── MD7..0 ── /BUF_OE ◄─ U1                             │
                                                                                     │
- X1 25.000M ─CLK25──► U1, U2 (GCLK1) and U5 (shift clock);  /LOAD ─────────────────►┘
+ X1 25.000M ─R7─CLK25──► U1, U2 (GCLK1); ─R8─CLK_SR──► U5;  /LOAD ────────────────►┘
  J3 JTAG ──TDI──► U1 ──► U2 ──► TDO
 ```
 
@@ -43,8 +43,8 @@ The fix is to **split the counters along with the multiplexer halves**:
 
 | | Holds | Pins | Macrocells |
 |:---|:---|:---:|:---:|
-| **U1** | pixel phase PH0–PH2, byte counter B0–B6, HBLANK, /HSYNC, /LOAD, bus decode, /DTACK, /SRAM_WE, /BUF_OE, "video on", the status read, **MA0–MA6** | 32/32 | 29/32 |
-| **U2** | line counter L0–L9, VBLANK, /VSYNC, the page register, **MA7–MA16** | 30/32 | 23/32 |
+| **U1** | pixel phase PH0–PH2, byte counter B0–B6, HBLANK, /HSYNC, /LOAD, bus decode, /DTACK, /SRAM_WE, /BUF_OE, "video on", the status read, **MA0–MA6** | 32/32 | 30/32 |
+| **U2** | line counter L0–L9, VBLANK, /VSYNC, the page register, **MA7–MA16** | 30/32 | 30/32 |
 
 MA0–MA6 comes from B, which lives in U1; MA7–MA15 comes from L, which lives in U2. No counter bit
 crosses. Only three wires do:
@@ -75,7 +75,7 @@ which is two product terms whatever the width, and maps onto the macrocell's own
 
 | Parameter | Value |
 |:---|:---|
-| Oscillator | X1, 25.000 MHz, into both CPLDs' GCLK1 and the 74HC166 shift clock |
+| Oscillator | X1, 25.000 MHz, into both CPLDs' GCLK1 (through R7) and the 74HC166 shift clock (through R8) |
 | Byte time | 8 clocks = 320 ns; one byte is eight pixels |
 | Line | 100 byte times = 800 clocks, 31.250 kHz |
 | Frame | 525 lines, 59.52 Hz |
@@ -249,7 +249,7 @@ current scanline. Draw on the hidden page and flip, or draw inside VBLANK.
 A byte fetch needs the SRAM for only ~71 ns of each 320 ns byte time, so in principle the CPU could
 have the rest and there would be no snow at all. That needs the read data to stay valid until the
 68010 latches it, roughly 150 ns after `/DTACK` is recognised — an arbiter and a wait-state
-generator. U1 has three spare macrocells and no spare pins.
+generator. U1 has two spare macrocells and no spare pins.
 
 ---
 
@@ -306,18 +306,19 @@ gives a board that looks alive and shows nothing.
 | U5 | 74HC166 | DIP-16 | pixel shift register |
 | Q1 | 2N3904 | TO-92 | video emitter follower |
 | X1 | 25.000 MHz | DIP-8 | oscillator |
+| R7, R8 | 33 Ω | axial | clock series resistors |
 
 ---
 
 ## 10. If the fitter says no
 
-U1 is at 32/32 pins and 29/32 macrocells, U2 at 30/32 and 23/32, and neither has been through
-WinCUPL. In rough order of what to try:
+Both fit today (U1 32/32 pins and 30/32 macrocells, U2 30/32 and 30/32, as the fitter counts them,
+fold-back product terms included). If a change pushes one over, in rough order of what to try:
 
 1. **Let the fitter move pins.** Change `PREASSIGN = KEEP` to `PREASSIGN = TRY` in the offending
    `.pld`, take the pinout it produces, put those pin numbers back into the `.pld`, and
    regenerate the board. Do not edit the schematic — it is generated from that file.
-2. **Move work from U1 to U2.** U2 has nine spare macrocells and two spare pins. The page register
+2. **Move work from U1 to U2.** U2 has two spare pins; its line-counter carries already use fold-back terms. The page register
    is already there; `/VSYNC` could be joined by almost anything that does not need many pins.
 3. **Give up the HBLANK status bit.** D1 frees a pin and a macrocell on U1.
 4. **Move to one bigger part.** An ATF1504AS in the 68-lead PLCC (64 macrocells, ~50 usable pins)

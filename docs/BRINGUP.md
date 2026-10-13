@@ -3,22 +3,23 @@
 No board has been manufactured yet — this is the procedure to follow with the first one, written
 so that a fault stops you at the step that can still explain it.
 
-Before anything else, read the fitter warning in the [README](../README.md#verification): U1 uses
-32 of 32 pins and 29 of 32 macrocells, U2 30 and 23, and neither has been through WinCUPL.
-**Compile both CPLD firmwares before you order the PCB.** If the fitter will not place a design on
-the pins in its `.pld`, the board is wrong and there is no point having it made.
+Both CPLD firmwares are built and checked: `cpld/bin/rsv_u1.jed` and `rsv_u2.jed` fit on the
+board's pins (U1 32/32 pins, 30/32 macrocells; U2 30/32 and 30/32). If you change a `.pld`,
+rebuild with `cpld/build.sh` before ordering — if the fitter will not place a design on the pins
+in its `.pld`, the board is wrong.
 
 ## 1. Compile and program the two CPLDs
 
-You need Microchip's WinCUPL (free) with the ATF150x fitter, and a JTAG programmer — a USB Blaster
-clone driven by ATMISP or OpenOCD is enough.
+The `.jed` files are in `cpld/bin/`. To rebuild them you need either Docker with the
+`dinoboards/cpld-toolchain` image (WinCUPL and the Atmel fitters, see `../tools/cpld-toolchain`) or
+Microchip's WinCUPL on Windows. For programming, a JTAG programmer — a USB Blaster clone driven by
+ATMISP or OpenOCD is enough.
 
-1. Open `cpld/rsv_u1.pld` in WinCUPL. The device (`f1502ispplcc44`) and the pin assignment are in
-   the file, along with `PREASSIGN = KEEP`, which tells the fitter to honour them.
-2. `Run → Device Dependent Compile`. Check `rsv_u1.fit`: every pin number must match the `.pld`,
-   JTAG must be ON, and the macrocell count must be within 32.
-3. Repeat for `cpld/rsv_u2.pld`.
-4. Program both through J3. The devices are in one chain — TDI → U1 → U2 → TDO — so one run does
+1. `cpld/build.sh` (Docker running; in git-bash) compiles both, stops if either does not fit or
+   the fitter moved a pin, and runs `tools/check_fit.py` to compare the fitted logic with the
+   simulated model. In WinCUPL by hand: open each `.pld`, `Run → Device Dependent Compile`, and
+   check in the `.fit` that every pin number matches the `.pld` and JTAG is ON.
+2. Program both through J3. The devices are in one chain — TDI → U1 → U2 → TDO — so one run does
    both, but **`rsv_u1.jed` goes to U1 and `rsv_u2.jed` to U2**. Swapping them gives a board that
    looks alive and shows nothing.
 
@@ -41,6 +42,8 @@ Order: sockets, then resistors and capacitors, then J1, J2 and J3, then the osci
 - **Q1 is a small-signal NPN in TO-92** — 2N3904, BC547, BC337, 2N2222 all work. Watch the
   orientation: the footprint is the JEDEC E-B-C inline order, flat side as drawn on the silkscreen.
 - **X1 is a canned oscillator**, not a crystal. 25.000 MHz.
+- R7 and R8 next to X1 are 33 Ω clock series resistors (R7 to the CPLDs, R8 to U5). They tame
+  the ringing on the long clock tracks; a wire link instead of either one also runs.
 - R1, R2 and R3 are 390 Ω (video), R4 and R5 are 47 Ω (sync), R6 is 220 Ω (Q1's base). R1–R5 stand
   in one row above J2, left to right R4 R5 R1 R2 R3 = HSYNC, VSYNC, red, green, blue. Fitting only
   R2 gives a green screen, only R1 + R2 an amber one, both at the same brightness.
@@ -59,7 +62,7 @@ Plug a monitor into J2. The screen will be black, but it should **lock**: the OS
 
 | Symptom | Look at |
 |---|---|
-| No signal at all | X1 pin 5: 25.000 MHz. Then pin 43 of both CPLDs — the same signal |
+| No signal at all | X1 pin 5: 25.000 MHz. Then pin 43 of both CPLDs (through R7) — the same signal |
 | HSYNC but no VSYNC, or VSYNC at the wrong rate | `LEND`, U1 pin 34 → U2 pin 44: a 31.25 kHz pulse one clock wide. This is the wire that makes U2's line counter run |
 | Out of range, or the picture rolls | U1 pin 41 (/HSYNC): 31.25 kHz, 3.84 µs low. U2 pin 40 (/VSYNC): 59.52 Hz |
 | Locks at the wrong rate | the wrong `.jed` in one of the sockets, or the two swapped |
@@ -116,7 +119,6 @@ overwriting the other rather than as a picture that is subtly wrong.
 
 ## 6. Still to be verified on real hardware
 
-- **that both halves fit an ATF1502AS at all** — see step 1;
 - real propagation delays, inside the CPLDs and on the board;
 - the BUFD timing and the LEND hand-off above;
 - the 0.67 V video level on a real monitor, and monitor tolerance of the timing;

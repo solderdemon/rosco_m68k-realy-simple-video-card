@@ -4,6 +4,11 @@ Supports PIN / PINNODE / FIELD declarations (with [a..b] ranges and lists), inte
 the operators ! & # $ and parentheses, numbers ('b'/'d'/'h', bare = hex), field equality and ranges
 (FIELD:'d'n, FIELD:['d'lo..'d'hi]) and the extensions .d .t .ck .ar .oe .io. All registers must be
 clocked by the same input. It is not a compiler: it lets the netlist simulation run the real source.
+
+`!FIELD:...` follows WinCUPL, not intuition: the `!` complements every bit of the field and the
+complemented value is compared, so `!LINE:['d'490..'d'491]` is true on lines 532-533, not on
+every line but 490-491. Write `!(FIELD:...)` to negate the comparison. Checked against the
+equations the ATF1502AS fitter produced.
 """
 import re
 
@@ -99,18 +104,24 @@ class Device:
             return '(' + ' & '.join(parts) + ')' if len(parts) > 1 else parts[0]
 
         def notx():
-            if peek() == '!': take(); return f'(1 - {notx()})'
+            if peek() == '!':
+                take()
+                if peek() in self.fields and pos[0] + 1 < len(toks) and toks[pos[0] + 1] == ':':
+                    return field(take(), True)             # !FIELD:... complements the field itself
+                return f'(1 - {notx()})'
             if peek() == '(': take(); e = xorx(); take(')'); return e
             tok = take()
             if tok.startswith("'"): return str(number(tok))
-            if peek() == ':':
-                take(); bits = self.fields[tok]
-                val = ' | '.join(f'{self.ref(b)} << {len(bits) - 1 - i}' for i, b in enumerate(bits))
-                if peek() == '[':
-                    take(); lo = number(take()); take('..'); hi = number(take()); take(']')
-                    return f'int({lo} <= ({val}) <= {hi})'
-                return f'int(({val}) == {number(take())})'
+            if peek() == ':': return field(tok, False)
             return self.ref(tok)
+
+        def field(tok, inv):
+            take(':'); bits = self.fields[tok]
+            val = ' | '.join(f'{"(1 - " if inv else "("}{self.ref(b)}) << {len(bits) - 1 - i}' for i, b in enumerate(bits))
+            if peek() == '[':
+                take(); lo = number(take()); take('..'); hi = number(take()); take(']')
+                return f'int({lo} <= ({val}) <= {hi})'
+            return f'int(({val}) == {number(take())})'
 
         out = xorx(); assert pos[0] == len(toks), (expr, toks[pos[0]:])
         return out

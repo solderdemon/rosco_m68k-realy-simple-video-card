@@ -129,14 +129,18 @@ d.add('U4', k, '74HCT245', named(k, m), (270, 200))
 #      74HC166 at 40 MHz (4.5 V, full temperature range), so 25.000 MHz has plenty of margin;
 #      its output only has to drive Q1's base, not the video lines.
 k = d.standard('74xx', '74LS166', DIP(16))
-m = {'Ds': 'GND', 'CE': 'GND', 'Clk': 'CLK25', 'Clr': '+5V', 'PE': '~{LOAD}', 'Qh': 'PIXEL',
+m = {'Ds': 'GND', 'CE': 'GND', 'Clk': 'CLK_SR', 'Clr': '+5V', 'PE': '~{LOAD}', 'Qh': 'PIXEL',
      'VCC': '+5V', 'GND': 'GND'}
 m.update({ch: f'MD{i}' for i, ch in enumerate('ABCDEFGH')})
 d.add('U5', k, '74HC166', named(k, m), (340, 90))
 
 # ---- X1: 25.000 MHz can into both CPLDs' GCLK1 and the 74HC166 shift clock ----
+# The three loads sit in three corners of the board (~50-60 mm of track to each) and a canned
+# HCMOS oscillator has 1-3 ns edges, so the clock is a transmission line. Each branch gets its
+# own source series resistor right at pin 5: R7 for the CPLDs, R8 for the serialiser. The
+# ringing on a bare star could double-clock the CPLDs' fast GCLK1 input.
 k = d.standard('Oscillator', 'CXO_DIP8', FP_OSC)
-d.add('X1', k, '25.000MHz', {1: '+5V', 4: 'GND', 5: 'CLK25', 8: '+5V'}, (340, 200))
+d.add('X1', k, '25.000MHz', {1: '+5V', 4: 'GND', 5: 'CLK_OSC', 8: '+5V'}, (340, 200))
 
 # ---- video output ---------------------------------------------------------------------------
 # Three 75 ohm monitor inputs want 9.3 mA each at full white, about 26 mA from one driver. No
@@ -152,6 +156,8 @@ for i, (ref, out) in enumerate([('R1', 'VGA_R'), ('R2', 'VGA_G'), ('R3', 'VGA_B'
     d.add(ref, R, '390', {1: 'VIDEO', 2: out}, (480, 40 + 30 * i))
 d.add('R4', R, '47', {1: '~{HSYNC}', 2: 'VGA_HS'}, (440, 170))
 d.add('R5', R, '47', {1: '~{VSYNC}', 2: 'VGA_VS'}, (470, 170))
+d.add('R7', R, '33', {1: 'CLK_OSC', 2: 'CLK25'}, (380, 190))
+d.add('R8', R, '33', {1: 'CLK_OSC', 2: 'CLK_SR'}, (380, 215))
 k = d.standard('Connector', 'DE15_Socket_HighDensity_MountingHoles', FP_VGA)
 vga = {1: 'VGA_R', 2: 'VGA_G', 3: 'VGA_B', 4: None, 5: 'GND', 6: 'GND', 7: 'GND', 8: 'GND', 9: None, 10: 'GND',
        11: None, 12: None, 13: 'VGA_HS', 14: 'VGA_VS', 15: None, 'SH': 'GND'}
@@ -262,12 +268,18 @@ dip('U3', 3.0, 20.0)
 dip('U4', 3.0, 44.0)
 dip('U5', 3.0, 62.0)
 
-place('X1', 41.0, 36.0, 0)
-ref_at('X1', 41.0, 44.2)
-place('C6', 49.5, 36.0, 90)
+# X1 turned so its output (pin 5) is the bottom right corner, with both clock series
+# resistors next to it: R7 (CPLDs) heading right and down, R8 (U5) heading left.
+place('X1', 41.0, 36.0, 270)
+ref_at('X1', 33.3, 36.0, 90)
+place('C6', 49.5, 36.0, 270)
 ref_at('C6', 52.3, 36.0, 90)
+place('R7', 49.5, 45.0, 270)
+ref_at('R7', 52.3, 45.0, 90)
+place('R8', 39.5, 45.6, 180)
+ref_at('R8', 39.5, 49.0)
 place('C9', 36.0, 54.0, 0)
-ref_at('C9', 36.0, 49.4)
+ref_at('C9', 31.0, 54.0, 90)
 place('J3', 66.0, 41.0, 90)
 ref_at('J3', 66.0, 35.0)
 
