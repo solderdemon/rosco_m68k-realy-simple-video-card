@@ -33,7 +33,7 @@ d = g.Design(NAME, 'SolderDemon m68k Really Simple Video / VGA 640x480 mono, 2x 
              '2026-09-20', paper='A2', libname='SolderDemonReallySimpleVideo', ns='solderdemon-really-simple-video-r1/')
 DIP = lambda n, w=7.62: f'Package_DIP:DIP-{n}_W{w:.2f}mm_Socket_LongPads'
 FP_PLCC = 'Package_LCC:PLCC-44_THT-Socket'
-FP_C = 'Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm'
+FP_C = 'SolderDemonCaps:C_Radial_5.08mm'
 FP_CP = 'Capacitor_THT:CP_Radial_D6.3mm_P2.50mm'
 FP_R = 'Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal'
 FP_BUS = 'SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdge'
@@ -197,7 +197,7 @@ for p in d.parts:
     if p['ref'].startswith('#'):
         continue
     lib, name = p['fp'].split(':')
-    f = pcb.FootprintLoad(str(LOCAL_FP if lib == 'SolderDemonReallySimpleVideo' else g.LIB / 'footprints' / (lib + '.pretty')), name)
+    f = pcb.FootprintLoad(str(ROOT.parent / 'tools/capacitors/SolderDemonCaps.pretty' if lib == 'SolderDemonCaps' else LOCAL_FP if lib == 'SolderDemonReallySimpleVideo' else g.LIB / 'footprints' / (lib + '.pretty')), name)
     assert f, p['fp']
     f.SetFPID(pcb.LIB_ID(lib, name))
     f.SetReference(p['ref'])
@@ -241,7 +241,7 @@ def dip(ref, left, y):
     ref_at(ref, left - 1.3, y, 90)
     cref = f'C{ref[1:]}'
     place(cref, right + 2.2, y, 90)
-    ref_at(cref, right + 2.2 + 2.8, y, 90)
+    ref_at(cref, right + 2.2, y, 90)
     return right + 4.0
 
 
@@ -255,13 +255,13 @@ ref_at('U1', 66.0, 6.0)
 place('U2', 66.0, 62.0, 0)
 ref_at('U2', 66.0, 48.0)
 place('C1', 51.0, 14.0, 90)
-ref_at('C1', 48.2, 14.0, 90)
+ref_at('C1', 51.0, 14.0, 90)
 place('C7', 51.0, 26.0, 90)
-ref_at('C7', 48.2, 26.0, 90)
+ref_at('C7', 51.0, 26.0, 90)
 place('C2', 51.0, 56.0, 90)
-ref_at('C2', 48.2, 56.0, 90)
+ref_at('C2', 51.0, 56.0, 90)
 place('C8', 51.0, 68.0, 90)
-ref_at('C8', 48.2, 68.0, 90)
+ref_at('C8', 51.0, 68.0, 90)
 
 # SRAM, transceiver and serialiser down the left side.
 dip('U3', 3.0, 20.0)
@@ -272,8 +272,8 @@ dip('U5', 3.0, 62.0)
 # resistors next to it: R7 (CPLDs) heading right and down, R8 (U5) heading left.
 place('X1', 41.0, 36.0, 270)
 ref_at('X1', 33.3, 36.0, 90)
-place('C6', 49.5, 36.0, 270)
-ref_at('C6', 52.3, 36.0, 90)
+place('C6', 50.0, 36.0, 270)
+ref_at('C6', 50.0, 36.0, 90)
 place('R7', 49.5, 45.0, 270)
 ref_at('R7', 52.3, 45.0, 90)
 place('R8', 39.5, 45.6, 180)

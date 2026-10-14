@@ -166,7 +166,7 @@ text-page and bouncing-box demo.
 | **R6** | 220 Ω | Axial DIN0207, P7.62 mm | Base resistor for Q1 |
 | **R4, R5** | 47 Ω | Axial DIN0207, P7.62 mm | HSYNC / VSYNC series resistors |
 | **R7, R8** | 33 Ω | Axial DIN0207, P7.62 mm | Clock series resistors at X1: R7 to the CPLDs, R8 to U5 |
-| **C1–C8** | 100 nF | Disc D5.0 mm, P2.5 mm | Bypass: two per CPLD, one per other IC, one at the oscillator |
+| **C1–C8** | 100 nF | Radial 5.08 mm pitch | Bypass: two per CPLD, one per other IC, one at the oscillator |
 | **C9** | 47 µF 10 V | Radial D6.3 mm, P2.5 mm | Bulk capacitor |
 | — | Sockets | 2 × PLCC-44 THT, 1 × DIP-32 (600 mil), 1 × DIP-20, 1 × DIP-16, 1 × DIP-8 | Every IC is socketed |
 
