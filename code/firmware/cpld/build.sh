@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the two ATF1502AS of SolderDemon m68k Really Simple Video: rsv_u?.pld -> bin/rsv_u?.jed
 #
-# Uses the WinCUPL + Atmel fitter docker image (see ../../tools/cpld-toolchain), then checks
+# Uses the WinCUPL + Atmel fitter docker image (see ../../../../tools/cpld-toolchain), then checks
 #   1. that the fitter kept every pin where the .pld puts it -- the board is routed to those pins;
 #   2. that the fitted equations behave like tools/cupl.py's model, which sim_card.py ran.
 #
@@ -20,7 +20,7 @@ for f in rsv_u1 rsv_u2; do
     [ -f "bin/$f.jed" ] || { echo "$f: no .jed, see bin/$f.fit"; exit 1; }
     python - "$f" <<'EOF'
 import re, sys
-sys.path.insert(0, '../tools')
+sys.path.insert(0, '../../../tools')
 import cupl
 f = sys.argv[1]
 want = {name: n for n, name in cupl.Device(open(f + '.pld', encoding='utf-8').read()).pins.items()}
@@ -33,4 +33,4 @@ used = re.search(r'Total Macro cells used\s+(\S+)', fit).group(1)
 print(f'{f}: {len(want)} pins as assigned, {used} macrocells')
 EOF
 done
-python ../tools/check_fit.py rsv_u1 rsv_u2
+python ../../../tools/check_fit.py rsv_u1 rsv_u2

@@ -3,7 +3,7 @@
 VGA framebuffer card: 640 x 480, 1 bit per pixel, 2 pages, 5 ICs.
 
 The logic is two ATF1502AS-10JU44 (PLCC-44). Their equations and their pinouts come from
-cpld/rsv_u1.pld and cpld/rsv_u2.pld, which this script reads -- moving a signal to another pin is
+code/firmware/cpld/rsv_u1.pld and code/firmware/cpld/rsv_u2.pld, which this script reads -- moving a signal to another pin is
 a one-line change there and the schematic follows.
   U1 bus interface, byte counter B = 0..99, HSYNC, HBLANK, the low address half MA0..MA6,
      the control register bit "video on" and the status read;
@@ -15,16 +15,16 @@ A 74HC166 turns the byte into eight pixels; Q1 buffers the bit and three resisto
 VRAM at odd addresses $A00001 + 2n, control and status at $B00001.
 """
 from pathlib import Path
-import subprocess, sys, xml.etree.ElementTree as ET
+import shutil, subprocess, sys, xml.etree.ElementTree as ET
 import videolib as g
 import cupl
 import pcbnew as pcb
 
 ROOT = Path(__file__).resolve().parents[1]
-CLI = 'C:/Program Files/KiCad/10.0/bin/kicad-cli.exe'
-g.LIB = Path('C:/Program Files/KiCad/10.0/share/kicad')
+CLI = shutil.which('kicad-cli') or 'C:/Program Files/KiCad/10.0/bin/kicad-cli.exe'
+g.LIB = Path('/usr/share/kicad') if Path('/usr/share/kicad').exists() else Path('C:/Program Files/KiCad/10.0/share/kicad')
 NAME = 'solderdemon_m68k-realy-simple-video-card'
-BASE = 0xA00000          # decoded in cpld/rsv_u1.pld; only used for notes and silkscreen here
+BASE = 0xA00000          # decoded in code/firmware/cpld/rsv_u1.pld; only used for notes and silkscreen here
 REG = 0xB00001
 REV = 'r1'
 W, H = 92.0, 96.0
@@ -40,7 +40,7 @@ FP_BUS = 'SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdg
 FP_VGA = 'SolderDemonReallySimpleVideo:DSUB-15-HD_Socket_Horizontal_P2.29x1.90mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm'
 FP_OSC = 'Oscillator:Oscillator_DIP-8'
 FP_JTAG = 'Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical'
-LOCAL_FP = ROOT / 'SolderDemonReallySimpleVideo.pretty'
+LOCAL_FP = ROOT / 'design' / 'SolderDemonReallySimpleVideo.pretty'
 
 # ---- ATF1502AS PLCC-44 package: the pins the .pld cannot describe ----------------------------
 # The 44-lead pinout the whole ATF150x/MAX7000 family shares. Pins 1, 2, 43 and 44 are the
@@ -78,7 +78,7 @@ NET = {'LDS_N': '~{LDS}', 'EXPSEL_N': '~{EXPSEL}', 'RESET_N': '~{RESET}', 'RW': 
        'HSYNC_N': '~{HSYNC}', 'VSYNC_N': '~{VSYNC}'}
 DEV = {}
 for ref, src, chain in (('U1', 'rsv_u1', ('JTAG_TDI', 'JTAG_LINK')), ('U2', 'rsv_u2', ('JTAG_LINK', 'JTAG_TDO'))):
-    dev = cupl.Device((ROOT / 'cpld' / f'{src}.pld').read_text(encoding='utf-8'))
+    dev = cupl.Device((ROOT / 'code' / 'firmware' / 'cpld' / f'{src}.pld').read_text(encoding='utf-8'))
     DEV[ref] = dev
     tri = {t for t, e in dev.eq if e == 'oe'}
 
@@ -177,10 +177,10 @@ d.note(f'VRAM ${BASE:06X}-${BASE + 0xFFFFF:06X}: byte access (LDS) only, byte n 
        f'n = page << 16 | y << 7 | x >> 3 (x < 640, y < 480); bit 7 of the byte is the leftmost pixel.', 20, 385, 2)
 d.note(f'${REG:06X} write: b0 video on, b1 page shown (reset: 0, screen black, page 0). '
        f'Read: b0 VBLANK, b1 HBLANK. The register repeats over $B00001-$BFFFFF.', 20, 391, 2)
-d.note('U1 cpld/rsv_u1.pld, U2 cpld/rsv_u2.pld -- both ATF1502AS-10JU44 (CUPL; WinCUPL + fitter, one JTAG chain on J3). '
+d.note('U1 code/firmware/cpld/rsv_u1.pld, U2 code/firmware/cpld/rsv_u2.pld -- both ATF1502AS-10JU44 (CUPL; WinCUPL + fitter, one JTAG chain on J3). '
        'VGA 640x480 @ 60 Hz from 25.000 MHz: 100 bytes per line, HSYNC byte times 83-94, VSYNC lines 490-491.', 20, 397, 2)
 
-d.write(ROOT, [('SolderDemonReallySimpleVideo', '${KIPRJMOD}/SolderDemonReallySimpleVideo.pretty')])
+d.write(ROOT / 'design', [('SolderDemonReallySimpleVideo', '${KIPRJMOD}/SolderDemonReallySimpleVideo.pretty')])
 subprocess.run([sys.executable, str(Path(__file__).with_name('make_bus_footprint.py'))], check=True)
 
 # ---- PCB -----------------------------------------------------------------------
@@ -367,7 +367,7 @@ for i, line in enumerate([f'REALLY SIMPLE VIDEO {REV}', f'VRAM ${BASE + 1:06X} +
 
 # No-connect pins get 'unconnected-(...)' nets in the schematic; copy nets and pin metadata onto the pads.
 netlist = ROOT / 'netlist.xml'
-subprocess.run([CLI, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(netlist), str(ROOT / f'{NAME}.kicad_sch')], check=True, capture_output=True)
+subprocess.run([CLI, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(netlist), str(ROOT / 'design' / f'{NAME}.kicad_sch')], check=True, capture_output=True)
 for n in ET.parse(netlist).findall('./nets/net'):
     for node in n.findall('node'):
         f = fps.get(node.get('ref'))
@@ -385,6 +385,6 @@ for n in ET.parse(netlist).findall('./nets/net'):
             pad.SetPinType(node.get('pintype'))
 netlist.unlink()
 
-pcb.SaveBoard(str(ROOT / (NAME + '.kicad_pcb')), b)
-pcb.ExportSpecctraDSN(b, str(ROOT / 'routing.dsn'))
+pcb.SaveBoard(str(ROOT / 'design' / (NAME + '.kicad_pcb')), b)
+pcb.ExportSpecctraDSN(b, str(ROOT / 'design' / 'routing.dsn'))
 print('Generated', len(d.parts), 'symbols;', len(nets), 'nets;', f'{W:g} x {H:g} mm')

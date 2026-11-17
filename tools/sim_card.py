@@ -2,7 +2,7 @@
 
 Every IC is modelled by its function and wired exactly as build_card.py wired it, so wrong pins,
 swapped polarities and decode mistakes show up here before they reach copper. The two ATF1502AS
-run the equations in cpld/rsv_u1.pld and cpld/rsv_u2.pld, read and evaluated by tools/cupl.py, on
+run the equations in code/firmware/cpld/rsv_u1.pld and code/firmware/cpld/rsv_u2.pld, read and evaluated by tools/cupl.py, on
 the pins declared there. Checks:
   * the byte counter (U1) and the line counter (U2) run their full cycles and recover from every
     power-up state;
@@ -25,10 +25,10 @@ import videolib as g
 import cupl
 
 LIBNAME = 'SolderDemonReallySimpleVideo'
-PLD = {'U1': (ROOT / 'cpld' / 'rsv_u1.pld').read_text(encoding='utf-8'),
-       'U2': (ROOT / 'cpld' / 'rsv_u2.pld').read_text(encoding='utf-8')}
-parts = json.loads((ROOT / 'design.json').read_text())
-local = g.parse((ROOT / f'{LIBNAME}.kicad_sym').read_text(encoding='utf-8'))
+PLD = {'U1': (ROOT / 'code' / 'firmware' / 'cpld' / 'rsv_u1.pld').read_text(encoding='utf-8'),
+       'U2': (ROOT / 'code' / 'firmware' / 'cpld' / 'rsv_u2.pld').read_text(encoding='utf-8')}
+parts = json.loads((ROOT / 'design' / 'design.json').read_text())
+local = g.parse((ROOT / 'design' / f'{LIBNAME}.kicad_sym').read_text(encoding='utf-8'))
 
 
 def pin_names(key):

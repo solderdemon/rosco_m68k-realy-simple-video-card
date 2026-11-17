@@ -3,19 +3,21 @@
 No board has been manufactured yet — this is the procedure to follow with the first one, written
 so that a fault stops you at the step that can still explain it.
 
-Both CPLD firmwares are built and checked: `cpld/bin/rsv_u1.jed` and `rsv_u2.jed` fit on the
+Both CPLD firmwares are built and checked: `code/firmware/cpld/bin/rsv_u1.jed` and `rsv_u2.jed` fit on the
 board's pins (U1 32/32 pins, 30/32 macrocells; U2 30/32 and 30/32). If you change a `.pld`,
-rebuild with `cpld/build.sh` before ordering — if the fitter will not place a design on the pins
+rebuild with `code/firmware/cpld/build.sh` before ordering — if the fitter will not place a design on the pins
 in its `.pld`, the board is wrong.
 
 ## 1. Compile and program the two CPLDs
 
-The `.jed` files are in `cpld/bin/`. To rebuild them you need either Docker with the
+For Linux and USB-Blaster, follow the [ATF1502AS programming guide](./USB_BLASTER_ATF1502_PROGRAMMING.md).
+
+The `.jed` files are in `code/firmware/cpld/bin/`. To rebuild them you need either Docker with the
 `dinoboards/cpld-toolchain` image (WinCUPL and the Atmel fitters, see `../tools/cpld-toolchain`) or
 Microchip's WinCUPL on Windows. For programming, a JTAG programmer — a USB Blaster clone driven by
-ATMISP or OpenOCD is enough.
+OpenOCD is enough.
 
-1. `cpld/build.sh` (Docker running; in git-bash) compiles both, stops if either does not fit or
+1. `code/firmware/cpld/build.sh` (Docker running; in git-bash) compiles both, stops if either does not fit or
    the fitter moved a pin, and runs `tools/check_fit.py` to compare the fitted logic with the
    simulated model. In WinCUPL by hand: open each `.pld`, `Run → Device Dependent Compile`, and
    check in the `.fit` that every pin number matches the `.pld` and JTAG is ON.
@@ -75,7 +77,7 @@ the high half on U2 pins 4–16 (MA7–MA15): MA0 should be a clean 3.15 MHz, MA
 Power down, fit U3, U4 and U5, and power up again. The screen should still be black — `/RESET`
 clears `VIDEOON`, so the card comes up blanked on purpose.
 
-Now load the demo (`software/`, see [BUILD.md](BUILD.md)) over the serial bootloader. It runs the
+Now load the demo (`code/software/`, see [BUILD.md](BUILD.md)) over the serial bootloader. It runs the
 VRAM self test first and prints the result to the serial console:
 
 ```

@@ -1,0 +1,813 @@
+[
+ {
+  "ref": "J1",
+  "key": "SolderDemonReallySimpleVideo:BUS_2x32",
+  "value": "SOLDERDEMON M68K BUS",
+  "nets": {
+   "1": "A1",
+   "3": "A2",
+   "5": "A3",
+   "7": "A4",
+   "9": "A5",
+   "11": "A6",
+   "13": "A7",
+   "15": "A8",
+   "17": "A9",
+   "19": "A10",
+   "21": "A11",
+   "23": "A12",
+   "25": "A13",
+   "27": "A14",
+   "29": "A15",
+   "31": "A16",
+   "33": "A17",
+   "35": null,
+   "37": null,
+   "39": "A20",
+   "41": "A21",
+   "43": null,
+   "45": "A23",
+   "2": "+5V",
+   "4": null,
+   "6": "GND",
+   "8": null,
+   "10": null,
+   "12": null,
+   "14": null,
+   "16": null,
+   "18": "~{EXPSEL}",
+   "20": null,
+   "22": null,
+   "24": null,
+   "26": null,
+   "28": null,
+   "30": null,
+   "32": "~{LDS}",
+   "34": null,
+   "36": "~{RESET}",
+   "47": null,
+   "49": null,
+   "51": null,
+   "53": null,
+   "55": null,
+   "57": "~{DTACK}",
+   "59": "RWB",
+   "61": "D0",
+   "63": "D1",
+   "38": null,
+   "40": null,
+   "42": null,
+   "44": null,
+   "46": null,
+   "48": null,
+   "50": null,
+   "52": null,
+   "54": "D7",
+   "56": "D6",
+   "58": "D5",
+   "60": "D4",
+   "62": "D3",
+   "64": "D2"
+  },
+  "xy": [
+   39.37,
+   110.49
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonReallySimpleVideo:PinSocket_2x32_P2.54mm_Horizontal_CardEdge",
+  "uuid": "8f6a411e-2354-5be4-ba71-b84a1f38a3c9"
+ },
+ {
+  "ref": "U1",
+  "key": "SolderDemonReallySimpleVideo:ATF1502AS_RSV_U1",
+  "value": "ATF1502AS-10JU44",
+  "nets": {
+   "1": "~{RESET}",
+   "2": "~{LDS}",
+   "3": "+5V",
+   "4": "MA0",
+   "5": "MA1",
+   "6": "MA2",
+   "7": "JTAG_TDI",
+   "8": "MA3",
+   "9": "MA4",
+   "10": "GND",
+   "11": "MA5",
+   "12": "MA6",
+   "13": "JTAG_TMS",
+   "14": "A1",
+   "15": "+5V",
+   "16": "A2",
+   "17": "A3",
+   "18": "A4",
+   "19": "A5",
+   "20": "A6",
+   "21": "A7",
+   "22": "GND",
+   "23": "+5V",
+   "24": "A23",
+   "25": "A21",
+   "26": "A20",
+   "27": "RWB",
+   "28": "~{DTACK}",
+   "29": "D0",
+   "30": "GND",
+   "31": "D1",
+   "32": "JTAG_TCK",
+   "33": "~{SEL}",
+   "34": "LEND",
+   "35": "+5V",
+   "36": "VBLANK",
+   "37": "~{SRAM_WE}",
+   "38": "JTAG_LINK",
+   "39": "~{BUF_OE}",
+   "40": "~{LOAD}",
+   "41": "~{HSYNC}",
+   "42": "GND",
+   "43": "CLK25",
+   "44": "~{EXPSEL}"
+  },
+  "xy": [
+   110.49,
+   59.69
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_LCC:PLCC-44_THT-Socket",
+  "uuid": "f55312db-c712-5e55-9cc8-065a346cd4df"
+ },
+ {
+  "ref": "U2",
+  "key": "SolderDemonReallySimpleVideo:ATF1502AS_RSV_U2",
+  "value": "ATF1502AS-10JU44",
+  "nets": {
+   "1": "~{RESET}",
+   "2": "~{LDS}",
+   "3": "+5V",
+   "4": "MA7",
+   "5": "MA8",
+   "6": "MA9",
+   "7": "JTAG_LINK",
+   "8": "MA10",
+   "9": "MA11",
+   "10": "GND",
+   "11": "MA12",
+   "12": "MA13",
+   "13": "JTAG_TMS",
+   "14": "MA14",
+   "15": "+5V",
+   "16": "MA15",
+   "17": "MA16",
+   "18": "A8",
+   "19": "A9",
+   "20": "A10",
+   "21": "A11",
+   "22": "GND",
+   "23": "+5V",
+   "24": "A12",
+   "25": "A13",
+   "26": "A14",
+   "27": "A15",
+   "28": "A16",
+   "29": "A17",
+   "30": "GND",
+   "31": "A20",
+   "32": "JTAG_TCK",
+   "33": "RWB",
+   "34": "D1",
+   "35": "+5V",
+   "36": "~{SEL}",
+   "37": null,
+   "38": "JTAG_TDO",
+   "39": "VBLANK",
+   "40": "~{VSYNC}",
+   "41": null,
+   "42": "GND",
+   "43": "CLK25",
+   "44": "LEND"
+  },
+  "xy": [
+   110.49,
+   260.35
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_LCC:PLCC-44_THT-Socket",
+  "uuid": "d9d80b17-442e-571f-b154-9462463c29bf"
+ },
+ {
+  "ref": "J3",
+  "key": "Connector_Generic:Conn_02x05_Odd_Even",
+  "value": "JTAG",
+  "nets": {
+   "1": "JTAG_TCK",
+   "2": "GND",
+   "3": "JTAG_TDO",
+   "4": "+5V",
+   "5": "JTAG_TMS",
+   "6": null,
+   "7": null,
+   "8": null,
+   "9": "JTAG_TDI",
+   "10": "GND"
+  },
+  "xy": [
+   110.49,
+   449.58
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical",
+  "uuid": "58322549-97b0-5681-ad11-27ef0a6b098a"
+ },
+ {
+  "ref": "U3",
+  "key": "Memory_RAM:AS6C1008-xxP",
+  "value": "AS6C1008-55PCN",
+  "nets": {
+   "16": "GND",
+   "32": "+5V",
+   "1": null,
+   "2": "MA16",
+   "3": "MA14",
+   "4": "MA12",
+   "5": "MA7",
+   "6": "MA6",
+   "7": "MA5",
+   "8": "MA4",
+   "9": "MA3",
+   "10": "MA2",
+   "11": "MA1",
+   "12": "MA0",
+   "13": "MD0",
+   "14": "MD1",
+   "15": "MD2",
+   "17": "MD3",
+   "18": "MD4",
+   "19": "MD5",
+   "20": "MD6",
+   "21": "MD7",
+   "22": "GND",
+   "23": "MA10",
+   "24": "GND",
+   "25": "MA11",
+   "26": "MA9",
+   "27": "MA8",
+   "28": "MA13",
+   "29": "~{SRAM_WE}",
+   "30": "+5V",
+   "31": "MA15"
+  },
+  "xy": [
+   270.51,
+   90.17
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_DIP:DIP-32_W15.24mm_Socket_LongPads",
+  "uuid": "80148274-81a5-5437-8c3a-087b7e95b34f"
+ },
+ {
+  "ref": "U4",
+  "key": "74xx:74HC245",
+  "value": "74HCT245",
+  "nets": {
+   "1": "RWB",
+   "2": "MD0",
+   "3": "MD1",
+   "4": "MD2",
+   "5": "MD3",
+   "6": "MD4",
+   "7": "MD5",
+   "8": "MD6",
+   "9": "MD7",
+   "10": "GND",
+   "11": "D7",
+   "12": "D6",
+   "13": "D5",
+   "14": "D4",
+   "15": "D3",
+   "16": "D2",
+   "17": "D1",
+   "18": "D0",
+   "19": "~{BUF_OE}",
+   "20": "+5V"
+  },
+  "xy": [
+   270.51,
+   199.39000000000001
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_DIP:DIP-20_W7.62mm_Socket_LongPads",
+  "uuid": "9a274685-aab2-5375-9199-b138053bcd55"
+ },
+ {
+  "ref": "U5",
+  "key": "74xx:74LS166",
+  "value": "74HC166",
+  "nets": {
+   "1": "GND",
+   "2": "MD0",
+   "3": "MD1",
+   "4": "MD2",
+   "5": "MD3",
+   "6": "GND",
+   "7": "CLK_SR",
+   "8": "GND",
+   "9": "+5V",
+   "10": "MD4",
+   "11": "MD5",
+   "12": "MD6",
+   "13": "PIXEL",
+   "14": "MD7",
+   "15": "~{LOAD}",
+   "16": "+5V"
+  },
+  "xy": [
+   340.36,
+   90.17
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_DIP:DIP-16_W7.62mm_Socket_LongPads",
+  "uuid": "a49ec689-5df3-5b2b-80f9-246991b3bd57"
+ },
+ {
+  "ref": "X1",
+  "key": "Oscillator:CXO_DIP8",
+  "value": "25.000MHz",
+  "nets": {
+   "1": "+5V",
+   "4": "GND",
+   "5": "CLK_OSC",
+   "8": "+5V"
+  },
+  "xy": [
+   340.36,
+   199.39000000000001
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Oscillator:Oscillator_DIP-8",
+  "uuid": "e30ce3ae-2e51-5a12-b66c-be12925d8f7e"
+ },
+ {
+  "ref": "R6",
+  "key": "Device:R",
+  "value": "220",
+  "nets": {
+   "1": "PIXEL",
+   "2": "Q_BASE"
+  },
+  "xy": [
+   410.21,
+   100.33
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "0f2ad17e-1bf8-5caf-8ba4-1005b67af406"
+ },
+ {
+  "ref": "Q1",
+  "key": "Transistor_BJT:Q_NPN_EBC",
+  "value": "2N3904",
+  "nets": {
+   "1": "VIDEO",
+   "2": "Q_BASE",
+   "3": "+5V"
+  },
+  "xy": [
+   439.42,
+   100.33
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Package_TO_SOT_THT:TO-92_Inline",
+  "uuid": "33685dbb-3ca2-500c-912b-e45697bfda25"
+ },
+ {
+  "ref": "R1",
+  "key": "Device:R",
+  "value": "390",
+  "nets": {
+   "1": "VIDEO",
+   "2": "VGA_R"
+  },
+  "xy": [
+   480.06,
+   39.37
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "90700be9-8533-518d-93b6-f95115e160d0"
+ },
+ {
+  "ref": "R2",
+  "key": "Device:R",
+  "value": "390",
+  "nets": {
+   "1": "VIDEO",
+   "2": "VGA_G"
+  },
+  "xy": [
+   480.06,
+   69.85
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "5a5089b9-e9a1-55de-b2bd-f691fb761337"
+ },
+ {
+  "ref": "R3",
+  "key": "Device:R",
+  "value": "390",
+  "nets": {
+   "1": "VIDEO",
+   "2": "VGA_B"
+  },
+  "xy": [
+   480.06,
+   100.33
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "c6782f37-4bc6-535d-9040-efed7fca6684"
+ },
+ {
+  "ref": "R4",
+  "key": "Device:R",
+  "value": "47",
+  "nets": {
+   "1": "~{HSYNC}",
+   "2": "VGA_HS"
+  },
+  "xy": [
+   439.42,
+   170.18
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "6d97db24-9f4b-5c0d-aace-ff36fcef223a"
+ },
+ {
+  "ref": "R5",
+  "key": "Device:R",
+  "value": "47",
+  "nets": {
+   "1": "~{VSYNC}",
+   "2": "VGA_VS"
+  },
+  "xy": [
+   469.90000000000003,
+   170.18
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "f8054844-915a-58f4-a6c3-3deebcfca942"
+ },
+ {
+  "ref": "R7",
+  "key": "Device:R",
+  "value": "33",
+  "nets": {
+   "1": "CLK_OSC",
+   "2": "CLK25"
+  },
+  "xy": [
+   379.73,
+   190.5
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "1779162b-1ae4-540b-b2ac-f9cb6a858c72"
+ },
+ {
+  "ref": "R8",
+  "key": "Device:R",
+  "value": "33",
+  "nets": {
+   "1": "CLK_OSC",
+   "2": "CLK_SR"
+  },
+  "xy": [
+   379.73,
+   214.63
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+  "uuid": "6eae4f24-2449-50c4-af15-d7691a4f08e8"
+ },
+ {
+  "ref": "J2",
+  "key": "Connector:DE15_Socket_HighDensity_MountingHoles",
+  "value": "VGA",
+  "nets": {
+   "1": "VGA_R",
+   "2": "VGA_G",
+   "3": "VGA_B",
+   "4": null,
+   "5": "GND",
+   "6": "GND",
+   "7": "GND",
+   "8": "GND",
+   "9": null,
+   "10": "GND",
+   "11": null,
+   "12": null,
+   "13": "VGA_HS",
+   "14": "VGA_VS",
+   "15": null,
+   "SH": "GND"
+  },
+  "xy": [
+   529.59,
+   100.33
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonReallySimpleVideo:DSUB-15-HD_Socket_Horizontal_P2.29x1.90mm_EdgePinOffset3.03mm_Housed_MountingHolesOffset4.94mm",
+  "uuid": "bbeef143-9166-5522-9749-262cf16f3bfe"
+ },
+ {
+  "ref": "C1",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   379.73,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "bab8bce1-36e1-5ad7-a0a6-3497dea89666"
+ },
+ {
+  "ref": "C2",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   394.97,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "cdfe3eb3-24d1-57d1-8ef1-a59653c950bf"
+ },
+ {
+  "ref": "C3",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   410.21,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "37ee330c-11ad-5928-976e-ceec03dc3927"
+ },
+ {
+  "ref": "C4",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   425.45,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "243f4c54-19ff-589d-b584-0e95fb0b3c81"
+ },
+ {
+  "ref": "C5",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   440.69,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "2d4b9d88-5110-587a-8937-11a0fc179618"
+ },
+ {
+  "ref": "C6",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   455.93,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "25fc73fb-4af6-5d24-9bb7-b161b0729e1e"
+ },
+ {
+  "ref": "C7",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   471.17,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "bec6ba00-e935-509a-96e7-fc789b0664aa"
+ },
+ {
+  "ref": "C8",
+  "key": "Device:C",
+  "value": "100nF",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   486.41,
+   289.56
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "SolderDemonCaps:C_Radial_5.08mm",
+  "uuid": "d2fb6c8d-bf35-5b08-ab02-1971ea002f8c"
+ },
+ {
+  "ref": "C9",
+  "key": "Device:C_Polarized",
+  "value": "47uF 10V",
+  "nets": {
+   "1": "+5V",
+   "2": "GND"
+  },
+  "xy": [
+   379.73,
+   350.52
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm",
+  "uuid": "0e3a7e5f-f200-59d2-8ced-fe1e4bbbac41"
+ },
+ {
+  "ref": "#FLG01",
+  "key": "power:PWR_FLAG",
+  "value": "PWR_FLAG",
+  "nets": {
+   "1": "+5V"
+  },
+  "xy": [
+   454.66,
+   345.44
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "",
+  "uuid": "3eb74ff4-ae91-56c8-8412-ca0bd87f1ab8"
+ },
+ {
+  "ref": "#FLG02",
+  "key": "power:PWR_FLAG",
+  "value": "PWR_FLAG",
+  "nets": {
+   "1": "GND"
+  },
+  "xy": [
+   474.98,
+   345.44
+  ],
+  "pos": [
+   0,
+   0
+  ],
+  "rot": 0,
+  "fp": "",
+  "uuid": "0a894572-6d2c-519a-ac57-8e59f50c2392"
+ }
+]

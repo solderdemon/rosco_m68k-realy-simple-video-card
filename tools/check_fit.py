@@ -3,10 +3,10 @@
 sim_card.py proves the card with tools/cupl.py's reading of the CUPL source. That reading can
 differ from the compiler's -- it did for `!FIELD:[lo..hi]`, which CUPL takes as "the complemented
 field is in range" -- so this script closes the loop: it parses the sum-of-products equations the
-ATF1502AS fitter wrote into cpld/bin/<name>.fit and compares them with the model on random input
+ATF1502AS fitter wrote into code/firmware/cpld/bin/<name>.fit and compares them with the model on random input
 pins and random register states (every output, its enable, every next state, the async clear).
 
-    python tools/check_fit.py rsv_u1 rsv_u2        (after cpld/build.sh)
+    python tools/check_fit.py rsv_u1 rsv_u2        (after code/firmware/cpld/build.sh)
 """
 from pathlib import Path
 import random, re, sys
@@ -33,8 +33,8 @@ def fitted(text):
 
 
 def check(name):
-    dev = cupl.Device((ROOT / 'cpld' / f'{name}.pld').read_text(encoding='utf-8'))
-    eqs = fitted((ROOT / 'cpld' / 'bin' / f'{name}.fit').read_text(encoding='latin-1'))
+    dev = cupl.Device((ROOT / 'code' / 'firmware' / 'cpld' / f'{name}.pld').read_text(encoding='utf-8'))
+    eqs = fitted((ROOT / 'code' / 'firmware' / 'cpld' / 'bin' / f'{name}.fit').read_text(encoding='latin-1'))
 
     # The fitter may put a buried register straight into the macrocell of the pin that only
     # copies it (U1: `D1 = HBLANK` becomes register D1): give it back the model's name.
@@ -108,5 +108,5 @@ def check(name):
 
 
 if __name__ == '__main__':
-    ok = [check(n) for n in sys.argv[1:] or sorted(f.stem for f in (ROOT / 'cpld').glob('*.pld'))]
+    ok = [check(n) for n in sys.argv[1:] or sorted(f.stem for f in (ROOT / 'code' / 'firmware' / 'cpld').glob('*.pld'))]
     sys.exit(0 if all(ok) else 1)

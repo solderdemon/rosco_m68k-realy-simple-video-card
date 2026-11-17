@@ -139,5 +139,5 @@ else:
         name = {0x27: "'", 0x5C: '\\\\'}.get(c, chr(c))
         body.append('    { ' + ', '.join(f'0x{r:02X}' for r in glyph) + f" }},   /* '{name}' */")
     body += ['};', '']
-    (ROOT / 'software' / 'font8x8.c').write_text('\n'.join(body), encoding='utf-8')
+    (ROOT / 'code' / 'software' / 'font8x8.c').write_text('\n'.join(body), encoding='utf-8')
     print(f'software/font8x8.c: {len(t)} glyphs')

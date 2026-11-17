@@ -23,7 +23,20 @@ software/*.bin
 # Router logs
 logs/
 
-# CPLD build (cpld/build.sh): keep only the programming files and the fitter reports
-cpld/bin/*
-!cpld/bin/*.jed
-!cpld/bin/*.fit
+# CPLD build (code/firmware/cpld/build.sh): keep only the programming files and the fitter reports
+code/firmware/cpld/bin/*
+!code/firmware/cpld/bin/*.jed
+!code/firmware/cpld/bin/*.fit
+
+# Local build products
+/code/build/*
+!/code/build/README.md
+
+# Local archives and generated work products
+/production/
+/*-backups/
+/.history/
+/routing-swarm/
+
+/code/tests/test_driver
+/code/tests/test_driver.exe

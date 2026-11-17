@@ -6,7 +6,7 @@ import re, subprocess
 import pcbnew as pcb
 
 ROOT = Path(__file__).resolve().parents[1]
-BOARD = ROOT / 'solderdemon_m68k-realy-simple-video-card.kicad_pcb'
+BOARD = ROOT / 'design' / 'solderdemon_m68k-realy-simple-video-card.kicad_pcb'
 CLI = 'C:/Program Files/KiCad/10.0/bin/kicad-cli.exe'
 RPT = ROOT / 'drc.rpt'
 

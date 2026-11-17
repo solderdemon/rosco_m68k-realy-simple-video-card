@@ -1,6 +1,6 @@
 # Regenerating this card
 
-Nothing in this project is edited by hand except `tools/`, `cpld/`, `software/` and the
+Nothing in this project is edited by hand except `tools/`, `code/firmware/cpld/`, `code/software/` and the
 `.kicad_pro` file. The schematic, the symbol library, the footprints, the PCB, `design.json`,
 `BOM.csv` and the manufacturing outputs are all generated, and the next run of the generator
 overwrites them. Open KiCad to *look* at the result, not to change it.
@@ -8,7 +8,7 @@ overwrites them. Open KiCad to *look* at the result, not to change it.
 `tools/build_card.py` always writes a PCB **without tracks**, so any change to the schematic,
 placement or silkscreen means re-routing with `tools/route_card.py`.
 
-`cpld/rsv_u1.pld` and `cpld/rsv_u2.pld` are the single source of truth for both the logic **and**
+`code/firmware/cpld/rsv_u1.pld` and `code/firmware/cpld/rsv_u2.pld` are the single source of truth for both the logic **and**
 the CPLD pinouts: `build_card.py` reads the pin numbers out of them to build the schematic
 symbols, and `sim_card.py` evaluates the equations to simulate the card. Move a signal to another
 pin there and everything follows.
@@ -25,7 +25,7 @@ pin there and everything follows.
 | clang (or any C compiler) | only for the host driver test |
 
 Anything that imports `pcbnew` has to run under KiCad's own Python, not the system one. The CPLD
-firmware is built in Docker; `cpld/bin/` keeps the `.jed` and `.fit` of the last build.
+firmware is built in Docker; `code/firmware/cpld/bin/` keeps the `.jed` and `.fit` of the last build.
 
 ## The pipeline
 
@@ -35,12 +35,12 @@ Each step is a gate: move on only when the current one is clean.
 K="/c/Program Files/KiCad/10.0/bin"
 N=solderdemon_m68k-realy-simple-video-card
 
-# 1. CPLD firmware: WinCUPL + fitter in docker -> cpld/bin/*.jed, pin check, and
+# 1. CPLD firmware: WinCUPL + fitter in docker -> code/firmware/cpld/bin/*.jed, pin check, and
 #    tools/check_fit.py (fitted equations == the cupl.py model the simulation runs).
 #    Do this first: if either does not fit, nothing else matters.
 ./cpld/build.sh
 
-# 2. The 8x8 console font -> software/font8x8.c (only after editing the pictures in make_font.py)
+# 2. The 8x8 console font -> code/software/font8x8.c (only after editing the pictures in make_font.py)
 python tools/make_font.py
 
 # 3. Schematic, symbols, footprints, BOM, design.json and the unrouted, placed PCB
@@ -78,14 +78,13 @@ needs re-running when the image or its size (14 mm tall) changes.
 # to the right and bottom.
 "$K/kicad-cli.exe" pcb render --side top --width 1600 --height 1000 -o $N-top.png $N.kicad_pcb
 "$K/kicad-cli.exe" pcb render --side bottom --width 1600 --height 1000 -o $N-bottom.png $N.kicad_pcb
-"$K/kicad-cli.exe" pcb render --side top --perspective --rotate -40,0,-20 --zoom 0.8 --pan " 0.6,1.4,0"     --background transparent --light-camera 1 --light-top 0 --light-side 0 --light-bottom 0     --width 1600 --height 1000 -o $N-3d.png $N.kicad_pcb
 ```
 
 ## Where things are decided
 
 | Question | File |
 |---|---|
-| What each CPLD does, and every one of its pin numbers | `cpld/rsv_u1.pld`, `cpld/rsv_u2.pld` |
+| What each CPLD does, and every one of its pin numbers | `code/firmware/cpld/rsv_u1.pld`, `code/firmware/cpld/rsv_u2.pld` |
 | Which chips exist, how they are wired, where they sit | `tools/build_card.py` |
 | The PLCC-44 power and JTAG pins (not expressible in CUPL) | `VCC_PINS` / `GND_PINS` / `JTAG_PINS` in `tools/build_card.py` |
 | The JTAG chain order | the `chain` tuples in `build_card.py`'s CPLD loop |

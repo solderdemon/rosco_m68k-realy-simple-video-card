@@ -10,4 +10,4 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
 from route_lib import route
 
-route('solderdemon_m68k-realy-simple-video-card', root=Path(__file__).resolve().parents[1], corner=3.0)
+route('solderdemon_m68k-realy-simple-video-card', root=Path(__file__).resolve().parents[1] / 'design', corner=3.0)
