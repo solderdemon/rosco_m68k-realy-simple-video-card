@@ -1,5 +1,7 @@
 # SolderDemon m68k Really Simple Video
 
+## Overview
+
 A SolderDemon m68k expansion card with a 640 × 480 monochrome framebuffer, 60 Hz VGA output, and two display pages. Two ATF1502AS CPLDs handle video timing, memory addressing, and the host interface.
 
 J1 matches the expansion bus pinout of [rosco_m68k r2](https://github.com/rosco-m68k/rosco_m68k).
@@ -10,8 +12,8 @@ J1 matches the expansion bus pinout of [rosco_m68k r2](https://github.com/rosco-
 
 - [KiCad project](design/solderdemon_m68k-realy-simple-video-card.kicad_pro)
 - [Schematic (PDF)](manufacturing/solderdemon_m68k-realy-simple-video-card-schematic.pdf)
-- [Gerbers and drill files](manufacturing/solderdemon_m68k-realy-simple-video-card-gerbers.zip)
 - [Assembly and bring-up](docs/BRINGUP.md)
+- [Gerbers and drill files](manufacturing/solderdemon_m68k-realy-simple-video-card-gerbers.zip)
 
 ## Board views
 
@@ -19,7 +21,9 @@ J1 matches the expansion bus pinout of [rosco_m68k r2](https://github.com/rosco-
 |:---:|:---:|
 | ![Top view](solderdemon_m68k-realy-simple-video-card-top.png) | ![Bottom view](solderdemon_m68k-realy-simple-video-card-bottom.png) |
 
-## Features
+## Hardware
+
+### Features
 
 | | |
 |---|---|
@@ -34,7 +38,7 @@ J1 matches the expansion bus pinout of [rosco_m68k r2](https://github.com/rosco-
 | Assembly | through-hole, every IC socketed; two CPLDs to program over JTAG |
 | Size | 92 × 96 mm, 2 layers |
 
-## Two CPLDs, five ICs
+### Two CPLDs, five ICs
 
 An ATF1502AS has 32 macrocells and, with JTAG left enabled, 28 I/O pins plus 4 dedicated inputs —
 **32 usable signals**. An address multiplexer alone is 16 inputs plus 16 outputs: 32 pins before
@@ -53,7 +57,7 @@ Only three wires run between them: `SEL_N`, `LEND` (step the line counter) and `
 - **The address path is short.** The CPU's address reaches the SRAM through one CPLD (~10 ns),
   and the video address never leaves the chip that counts it.
 
-## Display and memory
+### Display and memory
 
 - **Video mode:** 640 × 480 @ 59.52 Hz, 31.250 kHz, exact VESA timing from a 25.000 MHz canned
   oscillator (`X1`) — 16/96/48 clock porches, VSYNC on lines 490-491; the clock leaves `X1`
@@ -72,9 +76,9 @@ Only three wires run between them: `SEL_N`, `LEND` (step the line counter) and `
   47 µF bulk capacitor (`C9`)
 - **Form factor:** 92 × 96 mm 2-layer PCB, right-angle bus socket (`J1`) along the right edge
 
-## Pinout
+### Pinout
 
-### J1 — SolderDemon m68k Expansion Bus (signals used by the card)
+#### J1 — SolderDemon m68k Expansion Bus (signals used by the card)
 
 | Pin | Signal | Use | Pin | Signal | Use |
 |:---:|:---|:---|:---:|:---|:---|
@@ -89,7 +93,7 @@ Only three wires run between them: `SEL_N`, `LEND` (step the line counter) and `
 A22 is not decoded (under `/EXPSEL` the only range with A23 and A21 set is `$A00000-$BFFFFF`), and
 A18/A19 are unconnected, so the VRAM image repeats through `$A40000–$AFFFFF`.
 
-### J2 — VGA (DE-15 HD, female)
+#### J2 — VGA (DE-15 HD, female)
 
 | Pin | Signal | Description |
 |:---:|:---|:---|
@@ -98,7 +102,7 @@ A18/A19 are unconnected, so the VRAM image repeats through `$A40000–$AFFFFF`.
 | **5–8, 10, shell** | **GND** | Ground |
 | **4, 9, 11, 12, 15** | — | Not connected (no DDC) |
 
-### J3 — JTAG (Atmel 10-pin ISP)
+#### J3 — JTAG (Atmel 10-pin ISP)
 
 | Pin | Signal | Pin | Signal |
 |:---:|:---|:---:|:---|
@@ -109,7 +113,7 @@ A18/A19 are unconnected, so the VRAM image repeats through `$A40000–$AFFFFF`.
 
 The two devices sit in one chain: TDI → U1 → U2 → TDO.
 
-### Memory map
+#### Memory map
 
 | Address | R/W | Description |
 |:---|:---:|:---|
@@ -124,7 +128,9 @@ error. Any CPU access while the picture is on shows eight wrong pixels on the cu
 This window does not overlap `rosco_m68k-simple-video` (`$800000–$9FFFFF`), so both cards can sit
 on the same backplane. Check it against your RAM expansion, which also lives in expansion space.
 
-## Software
+## Using the board
+
+### Software
 
 ```c
 #include "video.h"
@@ -146,7 +152,9 @@ sets a pixel on page 0. The driver (`code/software/video.c/.h`) adds clipping, l
 console font (80 × 60 characters), page flipping and a full VRAM self test; `code/software/main.c` is a
 text-page and bouncing-box demo.
 
-## Bill of Materials
+## Build and verification
+
+### Bill of Materials
 
 | Reference | Value | Package / Footprint | Notes |
 |:---|:---|:---|:---|
@@ -181,7 +189,7 @@ emitter follower: U5 drives its base through `R6` at a few hundred microamps and
 current. `R1`–`R3` then set the level on their own, which is why leaving one out changes the
 colour but not the brightness.
 
-## Design files
+### Design files
 
 - **KiCad project:** `design/solderdemon_m68k-realy-simple-video-card.kicad_pro` / `.kicad_sch` / `.kicad_pcb`
 - **CPLD firmware:** [code/firmware/cpld/rsv_u1.pld](code/firmware/cpld/rsv_u1.pld), [code/firmware/cpld/rsv_u2.pld](code/firmware/cpld/rsv_u2.pld) —
@@ -199,7 +207,7 @@ colour but not the brightness.
   [docs/BRINGUP.md](docs/BRINGUP.md) (programming, assembly, first power-up),
   [docs/BUILD.md](docs/BUILD.md) (regenerating everything)
 
-## Verification
+### Verification
 
 - **ERC:** 0 errors, 0 warnings ([erc.rpt](erc.rpt)).
 - **DRC with schematic parity:** 0 violations at error *and* warning severity, 0 unconnected pads
@@ -241,7 +249,7 @@ Programmable-logic files are in `code/firmware/cpld/`. Native CPLD tools retain 
 Design files and documentation are generated by scripts in `tools/`; change the sources and regenerate. Keep `.kicad_pro` as the source of DRC rules.
 <!-- /repository-layout -->
 
-## Licence
+## Licences and attribution
 
 Copyright © 2026 SolderDemon.
 
